@@ -1,0 +1,5 @@
+C:\Users\vlads\OneDrive\Рабочий стол\Оценка надежности по результатам тестирования\ReliabilityAssessment\ReliabilityAssessmentApp\ReliabilityAssessmentLibrary\bin\Debug\ReliabilityAssessmentLibrary.dll
+C:\Users\vlads\OneDrive\Рабочий стол\Оценка надежности по результатам тестирования\ReliabilityAssessment\ReliabilityAssessmentApp\ReliabilityAssessmentLibrary\bin\Debug\ReliabilityAssessmentLibrary.pdb
+C:\Users\vlads\OneDrive\Рабочий стол\Оценка надежности по результатам тестирования\ReliabilityAssessment\ReliabilityAssessmentApp\ReliabilityAssessmentLibrary\obj\Debug\ReliabilityAssessmentLibrary.csprojAssemblyReference.cache
+C:\Users\vlads\OneDrive\Рабочий стол\Оценка надежности по результатам тестирования\ReliabilityAssessment\ReliabilityAssessmentApp\ReliabilityAssessmentLibrary\obj\Debug\ReliabilityAssessmentLibrary.dll
+C:\Users\vlads\OneDrive\Рабочий стол\Оценка надежности по результатам тестирования\ReliabilityAssessment\ReliabilityAssessmentApp\ReliabilityAssessmentLibrary\obj\Debug\ReliabilityAssessmentLibrary.pdb

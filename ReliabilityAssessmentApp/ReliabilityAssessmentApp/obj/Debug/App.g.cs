@@ -9,6 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using DevExpress.Xpf.DXBinding;
 using ReliabilityAssessmentApp;
 using System;
 using System.Diagnostics;
