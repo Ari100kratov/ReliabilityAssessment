@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataModel.cs" />
+    <Compile Include="Factory\CharactVariableFactory.cs" />
+    <Compile Include="Factory\ICharactVariableFactory.cs" />
     <Compile Include="Factory\IRowElementFactory.cs" />
     <Compile Include="Factory\RowElementFactory.cs" />
     <Compile Include="IStandardPointEstimate.cs" />
