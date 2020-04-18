@@ -46,7 +46,7 @@ namespace ReliabilityAssessmentLibrary.Model
             if (intervalCount < 0)
                 throw new ArgumentOutOfRangeException(nameof(intervalCount), "Can't be less 0");
 
-            this.IntervalCount = IntervalCount;
+            this.IntervalCount = intervalCount;
             this.ExpDataList = expData;
             this.CreateVariationSeries();
             this.CalculateCharactVariable();

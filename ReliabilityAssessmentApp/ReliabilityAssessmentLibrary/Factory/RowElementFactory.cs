@@ -22,7 +22,7 @@ namespace ReliabilityAssessmentLibrary.Factory
                 throw new ArgumentOutOfRangeException(nameof(interval), "Can't be less or equal 0");
 
             var upperBound = lowerBound + interval;
-            var midInterval = lowerBound + upperBound / 2;
+            var midInterval = (lowerBound + upperBound) / 2;
 
             var rowElement = new RowElement
             {
