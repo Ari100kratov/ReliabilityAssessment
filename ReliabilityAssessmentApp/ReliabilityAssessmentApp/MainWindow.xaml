@@ -5,9 +5,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReliabilityAssessmentApp"
-        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" x:Class="ReliabilityAssessmentApp.MainWindow"
+        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" xmlns:UI="clr-namespace:DevExpress.Xpf.ThemeEditor.UI;assembly=DevExpress.Xpf.ThemeEditor.v17.1" x:Class="ReliabilityAssessmentApp.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="600" Width="800">
     <Grid>
 
         <Grid.RowDefinitions>
@@ -19,11 +19,11 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition ></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition />
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
 
         <dxe:TextEdit x:Name="teInput" Grid.Row="0" Grid.ColumnSpan="5" Height="50" Block.LineHeight="6" />
@@ -35,7 +35,7 @@
 
         <Label Content="Хар. случайной величины" Grid.Row="2" RenderTransformOrigin="0.5,0.5" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Label.LayoutTransform>
-                    <RotateTransform Angle="-90"/>
+                <RotateTransform Angle="-90"/>
             </Label.LayoutTransform>
         </Label>
 
@@ -57,34 +57,34 @@
             </Label.LayoutTransform>
         </Label>
 
-        
-        <dxg:GridControl x:Name="gcSeriesLess" Grid.Column="1" Grid.Row="3" SelectionMode="Row" Height="100">
+
+        <dxg:GridControl x:Name="gcSeriesLess" Grid.Column="1" Grid.Row="3" SelectionMode="Row" Height="150">
             <dxg:GridControl.View>
                 <dxg:TableView AllowEditing="False" ShowGroupPanel="False" AutoWidth="True"/>
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="Number" Header="№"/>
+            <dxg:GridColumn FieldName="Number" Header="№" Width="60"/>
             <dxg:GridColumn FieldName="LowerBound" Header="Нижняя граница"/>
             <dxg:GridColumn FieldName="UpperBound" Header="Верхняя граница"/>
             <dxg:GridColumn FieldName="MidInterval" Header="Середина интервала"/>
             <dxg:GridColumn FieldName="HitCount" Header="Число попаданий"/>
         </dxg:GridControl>
 
-        <dxg:GridControl x:Name="gcSeriesMain" Grid.Column="2" Grid.Row="3" SelectionMode="Row" Height="100">
+        <dxg:GridControl x:Name="gcSeriesMain" Grid.Column="2" Grid.Row="3" SelectionMode="Row" Height="150">
             <dxg:GridControl.View>
                 <dxg:TableView AllowEditing="False" ShowGroupPanel="False" AutoWidth="True"/>
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="Number" Header="№" />
+            <dxg:GridColumn FieldName="Number" Header="№" Width="60"/>
             <dxg:GridColumn FieldName="LowerBound" Header="Нижняя граница"/>
             <dxg:GridColumn FieldName="UpperBound" Header="Верхняя граница"/>
             <dxg:GridColumn FieldName="MidInterval" Header="Середина интервала"/>
             <dxg:GridColumn FieldName="HitCount" Header="Число попаданий"/>
         </dxg:GridControl>
 
-        <dxg:GridControl x:Name="gcSeriesMore" Grid.Column="3" Grid.Row="3" SelectionMode="Row" Height="100">
+        <dxg:GridControl x:Name="gcSeriesMore" Grid.Column="3" Grid.Row="3" SelectionMode="Row" Height="150">
             <dxg:GridControl.View>
                 <dxg:TableView AllowEditing="False" ShowGroupPanel="False" AutoWidth="True"/>
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="Number" Header="№"/>
+            <dxg:GridColumn FieldName="Number" Header="№" Width="60"/>
             <dxg:GridColumn FieldName="LowerBound" Header="Нижняя граница"/>
             <dxg:GridColumn FieldName="UpperBound" Header="Верхняя граница"/>
             <dxg:GridColumn FieldName="MidInterval" Header="Середина интервала"/>
@@ -94,55 +94,101 @@
 
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
             <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center">
-                <Label Content="Математическое ожидание"></Label>
-                <Label Content="Оценка дисперсии"></Label>
-                <Label Content="Сред. кв. отклонение"></Label>
-                <Label Content="Коэффициент вариации"></Label>
+                <Label Content="Математическое ожидание"/>
+                <Label Content="Оценка дисперсии"/>
+                <Label Content="Сред. кв. отклонение"/>
+                <Label Content="Коэффициент вариации"/>
+                <Label Content="Ширина интервала"/>
+                <Label Content="Количество интервалов"/>
+                <Label Content="Количество инверсий"/>
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center">
-                <Label x:Name="lblMathExpLess" Content="35,66"></Label>
-                <Label x:Name="lblDispersionLess" Content="35,66"></Label>
-                <Label x:Name="lblSquareLess" Content="35,66"></Label>
-                <Label x:Name="lblCoefVariationLess" Content="35,66"></Label>
+                <Label x:Name="lblMathExpLess" Content="35,66"/>
+                <Label x:Name="lblDispersionLess" Content="35,66"/>
+                <Label x:Name="lblSquareLess" Content="35,66"/>
+                <Label x:Name="lblCoefVariationLess" Content="35,66"/>
+                <Label x:Name="lblIntervalSizeLess"  Content="44,55"/>
+                <Label x:Name="lblIntervalCountLess"  Content="15"/>
+                <Label x:Name="lblInversionCountLess"  Content="10"/>
             </StackPanel>
         </StackPanel>
 
         <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
             <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center">
-                <Label Content="Математическое ожидание"></Label>
-                <Label Content="Оценка дисперсии"></Label>
-                <Label Content="Сред. кв. отклонение"></Label>
-                <Label Content="Коэффициент вариации"></Label>
+                <Label Content="Математическое ожидание"/>
+                <Label Content="Оценка дисперсии"/>
+                <Label Content="Сред. кв. отклонение"/>
+                <Label Content="Коэффициент вариации"/>
+                <Label Content="Ширина интервала"/>
+                <Label Content="Количество интервалов"/>
+                <Label Content="Количество инверсий"/>
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center">
-                <Label x:Name="lblMathExpMain" Content="35,66"></Label>
-                <Label x:Name="lblDispersionMain" Content="35,66"></Label>
-                <Label x:Name="lblSquareMain" Content="35,66"></Label>
-                <Label x:Name="lblCoefVariationMain" Content="35,66"></Label>
+                <Label x:Name="lblMathExpMain" Content="35,66"/>
+                <Label x:Name="lblDispersionMain" Content="35,66"/>
+                <Label x:Name="lblSquareMain" Content="35,66"/>
+                <Label x:Name="lblCoefVariationMain" Content="35,66"/>
+                <Label x:Name="lblIntervalSizeMain"  Content="44,55"/>
+                <Label x:Name="lblIntervalCountMain"  Content="15"/>
+                <Label x:Name="lblInversionCountMain"  Content="10"/>
             </StackPanel>
         </StackPanel>
 
         <StackPanel Grid.Row="2" Grid.Column="3" Orientation="Horizontal">
             <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center">
-                <Label Content="Математическое ожидание"></Label>
-                <Label Content="Оценка дисперсии"></Label>
-                <Label Content="Сред. кв. отклонение"></Label>
-                <Label Content="Коэффициент вариации"></Label>
+                <Label Content="Математическое ожидание"/>
+                <Label Content="Оценка дисперсии"/>
+                <Label Content="Сред. кв. отклонение"/>
+                <Label Content="Коэффициент вариации"/>
+                <Label Content="Ширина интервала"/>
+                <Label Content="Количество интервалов"/>
+                <Label Content="Количество инверсий"/>
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center">
-                <Label x:Name="lblMathExpMore" Content="35,66"></Label>
-                <Label x:Name="lblDispersionMore" Content="35,66"></Label>
-                <Label x:Name="lblSquareMore" Content="35,66"></Label>
-                <Label x:Name="lblCoefVariationMore" Content="35,66"></Label>
+                <Label x:Name="lblMathExpMore" Content="35,66"/>
+                <Label x:Name="lblDispersionMore" Content="35,66"/>
+                <Label x:Name="lblSquareMore" Content="35,66"/>
+                <Label x:Name="lblCoefVariationMore" Content="35,66"/>
+                <Label x:Name="lblIntervalSizeMore"  Content="44,55"/>
+                <Label x:Name="lblIntervalCountMore"  Content="15"/>
+                <Label x:Name="lblInversionCountMore"  Content="10"/>
             </StackPanel>
         </StackPanel>
 
-        <dxc:ChartControl x:Name="chartSampleLess" Grid.Row="4" Grid.Column="1"/>
-        <dxc:ChartControl x:Name="chartSampleMain" Grid.Row="4" Grid.Column="2"/>
-        <dxc:ChartControl x:Name="chartSampleMore" Grid.Row="4" Grid.Column="3"/>
+        <dxc:ChartControl x:Name="chartSampleLess" Grid.Row="4" Grid.Column="1" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+            <dxc:XYDiagram2D>
+                <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" BarWidth="1" LabelsVisibility="True"/>
+            </dxc:XYDiagram2D>
+        </dxc:ChartControl>
 
-        <dxc:ChartControl x:Name="chartFunctionLess" Grid.Row="5" Grid.Column="1"/>
-        <dxc:ChartControl x:Name="chartFunctionMain" Grid.Row="5" Grid.Column="2"/>
-        <dxc:ChartControl x:Name="chartFunctionMore" Grid.Row="5" Grid.Column="3"/>
+        <dxc:ChartControl x:Name="chartSampleMain" Grid.Row="4" Grid.Column="2" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+            <dxc:XYDiagram2D>
+                <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" BarWidth="1" LabelsVisibility="True"/>
+            </dxc:XYDiagram2D>
+        </dxc:ChartControl>
+        <dxc:ChartControl x:Name="chartSampleMore" Grid.Row="4" Grid.Column="3" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+            <dxc:XYDiagram2D>
+                <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" BarWidth="1" LabelsVisibility="True"/>
+            </dxc:XYDiagram2D>
+        </dxc:ChartControl>
+
+
+        <dxc:ChartControl x:Name="chartFunctionLess" Grid.Row="5" Grid.Column="1" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+            <dxc:XYDiagram2D>
+                <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" BarWidth="1" LabelsVisibility="True"/>
+            </dxc:XYDiagram2D>
+        </dxc:ChartControl>
+
+        <dxc:ChartControl x:Name="chartFunctionMain" Grid.Row="5" Grid.Column="2" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+            <dxc:XYDiagram2D>
+                <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" BarWidth="1" LabelsVisibility="True"/>
+            </dxc:XYDiagram2D>
+        </dxc:ChartControl>
+
+        <dxc:ChartControl x:Name="chartFunctionMore" Grid.Row="5" Grid.Column="3" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+            <dxc:XYDiagram2D>
+                <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" BarWidth="1" LabelsVisibility="True"/>
+            </dxc:XYDiagram2D>
+        </dxc:ChartControl>
     </Grid>
 </dxr:DXRibbonWindow>

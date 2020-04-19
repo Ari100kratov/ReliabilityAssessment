@@ -48,6 +48,7 @@
     <Compile Include="Factory\RowElementFactory.cs" />
     <Compile Include="IStandardPointEstimate.cs" />
     <Compile Include="Model\CharactVariable.cs" />
+    <Compile Include="Model\ChartModel\XYPoint.cs" />
     <Compile Include="Model\RowElement.cs" />
     <Compile Include="Model\VariationSeries.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
