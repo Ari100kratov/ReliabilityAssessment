@@ -63,10 +63,16 @@
                 <dxg:TableView AllowEditing="False" ShowGroupPanel="False" AutoWidth="True"/>
             </dxg:GridControl.View>
             <dxg:GridColumn FieldName="Number" Header="№" Width="60"/>
-            <dxg:GridColumn FieldName="LowerBound" Header="Нижняя граница"/>
-            <dxg:GridColumn FieldName="UpperBound" Header="Верхняя граница"/>
+            <dxg:GridColumn FieldName="Bounds" Header="Интервал"/>
             <dxg:GridColumn FieldName="MidInterval" Header="Середина интервала"/>
-            <dxg:GridColumn FieldName="HitCount" Header="Число попаданий"/>
+            <dxg:GridColumn FieldName="HitCount" Header="Частота"/>
+
+            <dxg:GridColumn FieldName="CumulativeFrequance" Header="Накопленная частота"/>
+            <dxg:GridColumn FieldName="RelativeFrequance" Header="Относительная частота"/>
+            <dxg:GridColumn FieldName="XMinusXMultiplyF" Header="|x - xср| * fi"/>
+            <dxg:GridColumn FieldName="XMinusXMultiplyFSquare" Header="(x-xср)^2·fi"/>
+            <dxg:GridColumn FieldName="XMultiplyF" Header="xi * fi"/>
+
         </dxg:GridControl>
 
         <dxg:GridControl x:Name="gcSeriesMain" Grid.Column="2" Grid.Row="3" SelectionMode="Row" Height="150">
@@ -74,10 +80,15 @@
                 <dxg:TableView AllowEditing="False" ShowGroupPanel="False" AutoWidth="True"/>
             </dxg:GridControl.View>
             <dxg:GridColumn FieldName="Number" Header="№" Width="60"/>
-            <dxg:GridColumn FieldName="LowerBound" Header="Нижняя граница"/>
-            <dxg:GridColumn FieldName="UpperBound" Header="Верхняя граница"/>
+            <dxg:GridColumn FieldName="Bounds" Header="Интервал"/>
             <dxg:GridColumn FieldName="MidInterval" Header="Середина интервала"/>
-            <dxg:GridColumn FieldName="HitCount" Header="Число попаданий"/>
+            <dxg:GridColumn FieldName="HitCount" Header="Частота"/>
+
+            <dxg:GridColumn FieldName="CumulativeFrequance" Header="Накопленная частота"/>
+            <dxg:GridColumn FieldName="RelativeFrequance" Header="Относительная частота"/>
+            <dxg:GridColumn FieldName="XMinusXMultiplyF" Header="|x - xср| * fi"/>
+            <dxg:GridColumn FieldName="XMinusXMultiplyFSquare" Header="(x-xср)^2·fi"/>
+            <dxg:GridColumn FieldName="XMultiplyF" Header="xi * fi"/>
         </dxg:GridControl>
 
         <dxg:GridControl x:Name="gcSeriesMore" Grid.Column="3" Grid.Row="3" SelectionMode="Row" Height="150">
@@ -85,10 +96,15 @@
                 <dxg:TableView AllowEditing="False" ShowGroupPanel="False" AutoWidth="True"/>
             </dxg:GridControl.View>
             <dxg:GridColumn FieldName="Number" Header="№" Width="60"/>
-            <dxg:GridColumn FieldName="LowerBound" Header="Нижняя граница"/>
-            <dxg:GridColumn FieldName="UpperBound" Header="Верхняя граница"/>
+            <dxg:GridColumn FieldName="Bounds" Header="Интервал"/>
             <dxg:GridColumn FieldName="MidInterval" Header="Середина интервала"/>
-            <dxg:GridColumn FieldName="HitCount" Header="Число попаданий"/>
+            <dxg:GridColumn FieldName="HitCount" Header="Частота"/>
+
+            <dxg:GridColumn FieldName="CumulativeFrequance" Header="Накопленная частота"/>
+            <dxg:GridColumn FieldName="RelativeFrequance" Header="Относительная частота"/>
+            <dxg:GridColumn FieldName="XMinusXMultiplyF" Header="|x - xср| * fi"/>
+            <dxg:GridColumn FieldName="XMinusXMultiplyFSquare" Header="(x-xср)^2·fi"/>
+            <dxg:GridColumn FieldName="XMultiplyF" Header="xi * fi"/>
         </dxg:GridControl>
 
 

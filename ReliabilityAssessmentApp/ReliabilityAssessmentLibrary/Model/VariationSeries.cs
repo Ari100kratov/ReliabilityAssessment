@@ -22,6 +22,16 @@ namespace ReliabilityAssessmentLibrary.Model
         public CharactVariable CharactVariable { get; private set; }
 
         /// <summary>
+        /// Показатели центра распределения вариационного ряда
+        /// </summary>
+        public IndicatorsDistributionCenter DistributionCenter { get; set; }
+
+        /// <summary>
+        /// Показатели вариации
+        /// </summary>
+        public IndicatorsVariation IndicatorsVariation { get; set; }
+
+        /// <summary>
         /// Список значений вариационного ряда
         /// </summary>
         public List<RowElement> ValueList { get; private set; }
@@ -66,6 +76,9 @@ namespace ReliabilityAssessmentLibrary.Model
             this.ExpDataList = expData;
             this.CreateVariationSeries();
             this.CalculateCharactVariable();
+            this.CalculateIndicatorsDistributionCenter();
+            this.CalculateIndicatorsVariations();
+            this.CalculateCharactVariable();
             this.FillXYDiagramList();
         }
 
@@ -97,6 +110,19 @@ namespace ReliabilityAssessmentLibrary.Model
 
                 lowerBound = upperBound;
             }
+
+            var cumulativeHitCount = 0;
+            var averageMidInterval = this.ExpDataList.Sum() / this.ExpDataList.Count();
+
+            foreach (var row in this.ValueList)
+            {
+                cumulativeHitCount += row.HitCount;
+
+                row.CumulativeFrequance = cumulativeHitCount;
+                row.XMinusXMultiplyF = (Math.Abs(row.MidInterval - averageMidInterval)) * row.HitCount;
+                row.XMinusXMultiplyFSquare = (Math.Pow(row.MidInterval - averageMidInterval, 2)) * row.HitCount;
+                row.RelativeFrequance = row.HitCount / (double)this.ExpDataList.Count();
+            }
         }
 
         /// <summary>
@@ -109,6 +135,149 @@ namespace ReliabilityAssessmentLibrary.Model
             var dispersion = (1 / ((double)this.ValueList.Count() - 1)) / (this.ValueList.Select(x => Math.Pow(x.MidInterval - mathExpectation, 2) * x.HitCount).Sum());
 
             this.CharactVariable = charactVariableFactory.Create(mathExpectation, dispersion);
+        }
+
+        /// <summary>
+        /// Рассчитать показатели центра распределения
+        /// </summary>
+        private void CalculateIndicatorsDistributionCenter()
+        {
+            var indicators = new IndicatorsDistributionCenter();
+
+            var hitCountSum = this.ValueList.Select(x => x.HitCount).Sum();
+
+            // Средняя взвешенная
+            var weightedAVG = this.ValueList.Select(x => x.XMultiplyF).Sum() / hitCountSum;
+
+            // Мода
+            var rowElementMode = this.ValueList.Find(r => r.HitCount == this.ValueList.Max(x => x.HitCount));
+            var preRowElementHitCount = this.ValueList.Find(x => x.UpperBound == rowElementMode.LowerBound)?.HitCount ?? 0;
+            var nextRowElementHitCount = this.ValueList.Find(x => x.LowerBound == rowElementMode.UpperBound)?.HitCount ?? 0;
+            var intervalMode = rowElementMode.UpperBound - rowElementMode.LowerBound;
+
+            var mode = rowElementMode.LowerBound
+                + (intervalMode * ((double)(rowElementMode.HitCount - preRowElementHitCount)
+                / ((rowElementMode.HitCount - preRowElementHitCount) + (rowElementMode.HitCount - nextRowElementHitCount))));
+
+            // Медиана
+            var rowElementMedian = this.ValueList.Find(x => x.CumulativeFrequance > (double)hitCountSum / 2);
+            var intervalMedian = rowElementMedian.UpperBound - rowElementMedian.LowerBound;
+            var preRowElementHitCountMedian = rowElementMedian.CumulativeFrequance - rowElementMedian.HitCount;
+
+            var median = rowElementMedian.LowerBound
+                + ((intervalMedian / rowElementMedian.HitCount)
+                * (((double)hitCountSum / 2) - preRowElementHitCountMedian));
+
+            //Q1
+            var rowElementQ1 = this.ValueList.Find(x => x.UpperBound == rowElementMedian.LowerBound);
+            var preRowElementHitCountQ1 = this.ValueList.Find(x => x.UpperBound == rowElementQ1.LowerBound)?.HitCount ?? 0;
+            var intervalQ1 = rowElementQ1.UpperBound - rowElementQ1.LowerBound;
+            var preRowCumulativeQ1 = this.ValueList.Find(x=>x.UpperBound == rowElementQ1.LowerBound)?.CumulativeFrequance??0;
+
+            var q1 = rowElementQ1.LowerBound 
+                + ((intervalQ1 / rowElementQ1.HitCount) 
+                * (((double)hitCountSum / 4) - preRowCumulativeQ1));
+
+            //Q2
+            var q2 = median;
+
+            //Q3
+            var rowElementQ3 = this.ValueList.Find(x => x.LowerBound == rowElementMedian.UpperBound);
+            var preRowElementHitCountQ3 = this.ValueList.Find(x => x.UpperBound == rowElementQ3.LowerBound)?.HitCount ?? 0;
+            var intervalQ3 = rowElementQ3.UpperBound - rowElementQ3.LowerBound;
+            var preRowCumulativeQ3 = this.ValueList.Find(x => x.UpperBound == rowElementQ3.LowerBound)?.CumulativeFrequance ?? 0;
+
+            var q3 = rowElementQ3.LowerBound
+                + ((intervalQ3 / rowElementQ3.HitCount)
+                * (((double)hitCountSum * 3 / 4) - preRowCumulativeQ3));
+
+            //D1
+            var findD1 = (double)1 / 10 * hitCountSum;
+            var rowElementD1 = this.ValueList.Find(x => x.CumulativeFrequance >= findD1);
+            var intervalD1 = rowElementD1.UpperBound - rowElementD1.LowerBound;
+            var preRowCumulativeD1 = this.ValueList.Find(x => x.UpperBound == rowElementD1.LowerBound)?.CumulativeFrequance ?? 0;
+
+            var d1 = rowElementD1.LowerBound
+                + ((intervalD1 / rowElementD1.HitCount)
+                * (((double)hitCountSum / 10) - preRowCumulativeD1));
+
+            //D9
+            var findD9 = (double)9 / 10 * hitCountSum;
+            var rowElementD9 = this.ValueList.Find(x => x.CumulativeFrequance >= findD9);
+            var intervalD9 = rowElementD9.UpperBound - rowElementD9.LowerBound;
+            var preRowCumulativeD9 = this.ValueList.Find(x => x.UpperBound == rowElementD9.LowerBound)?.CumulativeFrequance ?? 0;
+
+            var d9 = rowElementD9.LowerBound
+                + ((intervalD9 / rowElementD9.HitCount)
+                * (((double)hitCountSum * 9 / 10) - preRowCumulativeD9));
+
+            indicators.WeightedAVG = weightedAVG;
+            indicators.Mode = mode;
+            indicators.Median = median;
+            indicators.Q1 = q1;
+            indicators.Q2 = q2;
+            indicators.Q3 = q3;
+            indicators.D1 = d1;
+            indicators.D9 = d9;
+
+            this.DistributionCenter = indicators;
+        }
+
+        /// <summary>
+        /// Рассчитать показатели вариации
+        /// </summary>
+        private void CalculateIndicatorsVariations()
+        {
+            // рахмах вариации
+            var scope = this.ValueList.LastOrDefault().UpperBound - this.ValueList.FirstOrDefault().LowerBound;
+
+            // среднеее линейное отклонение
+            var avgLinearDeviation = this.ValueList.Select(x => x.XMinusXMultiplyF).Sum() / this.ValueList.Select(x => x.HitCount).Sum();
+
+            // дисперсия
+            var dispersion = this.ValueList.Select(x => x.XMinusXMultiplyFSquare).Sum() / this.ValueList.Select(x => x.HitCount).Sum();
+
+            // несмещенная оценка дисперсии
+            var unbiasedDispersion = this.ValueList.Select(x => x.XMinusXMultiplyFSquare).Sum() / (this.ValueList.Select(x => x.HitCount).Sum() - 1);
+
+            // среднее квадратичное отклонение
+            var meanSquareDeviation = Math.Sqrt(dispersion);
+
+            // оценка среднее квадратичное отклонение
+            var estimationMeanSquareDeviation = Math.Sqrt(unbiasedDispersion);
+
+
+            // коэффициент вариации
+            var coefVariation = meanSquareDeviation / this.DistributionCenter.WeightedAVG * 100;
+
+            // линейный коэффициент вариации
+            var linearCoefVariation = avgLinearDeviation / this.DistributionCenter.WeightedAVG * 100;
+
+            // коэффициент осцилляции
+            var coefOscillation = scope / this.DistributionCenter.WeightedAVG * 100;
+
+            var indicatorsVariation = new IndicatorsVariation
+            {
+                Scope = scope,
+                AVGLinearDeviation = avgLinearDeviation,
+                Dispersion = dispersion,
+                UnbiasedDispersion = unbiasedDispersion,
+                MeanSquareDeviation = meanSquareDeviation,
+                EstimationMeanSquareDeviation = estimationMeanSquareDeviation,
+                CoefVariation = coefVariation,
+                LinearCoefVariation = linearCoefVariation,
+                CoefOscillation = coefOscillation
+            };
+
+            this.IndicatorsVariation = indicatorsVariation;
+        }
+
+        /// <summary>
+        /// Рассчитать показатели формы распределения
+        /// </summary>
+        private void CalculateIndicatorsDistributionForm()
+        {
+            //var quartilleVariation = 
         }
 
         /// <summary>

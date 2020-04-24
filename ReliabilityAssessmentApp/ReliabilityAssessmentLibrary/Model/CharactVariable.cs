@@ -2,7 +2,7 @@
 namespace ReliabilityAssessmentLibrary.Model
 {
     /// <summary>
-    /// Характеристики случайно величины
+    /// Характеристики случайной величины
     /// </summary>
     public class CharactVariable
     {

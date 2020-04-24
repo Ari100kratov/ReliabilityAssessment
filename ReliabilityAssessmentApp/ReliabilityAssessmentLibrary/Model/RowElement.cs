@@ -30,5 +30,33 @@ namespace ReliabilityAssessmentLibrary.Model
         /// Число попаданий
         /// </summary>
         public int HitCount { get; set; }
+
+        /// <summary>
+        /// xi * fi
+        /// </summary>
+        public double XMultiplyF { get; set; }
+
+        /// <summary>
+        /// Накопленная частота
+        /// </summary>
+        public int CumulativeFrequance { get; set; }
+
+        /// <summary>
+        /// |x - xср| * fi
+        /// </summary>
+        public double XMinusXMultiplyF { get; set; }
+
+        /// <summary>
+        /// (x-xср)^2·fi
+        /// </summary>
+        public double XMinusXMultiplyFSquare { get; set; }
+
+        /// <summary>
+        /// Относительная частота
+        /// </summary>
+        public double RelativeFrequance { get; set; }
+
+        public string Bounds => $"{this.LowerBound} - {this.UpperBound}";
+
     }
 }

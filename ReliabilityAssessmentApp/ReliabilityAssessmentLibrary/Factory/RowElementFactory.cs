@@ -23,6 +23,7 @@ namespace ReliabilityAssessmentLibrary.Factory
 
             var upperBound = lowerBound + interval;
             var midInterval = (lowerBound + upperBound) / 2;
+            var xMultiplyF = midInterval * hitCount;
 
             var rowElement = new RowElement
             {
@@ -30,7 +31,8 @@ namespace ReliabilityAssessmentLibrary.Factory
                 LowerBound = lowerBound,
                 UpperBound = upperBound,
                 MidInterval = midInterval,
-                HitCount = hitCount
+                HitCount = hitCount,
+                XMultiplyF = xMultiplyF
             };
 
             return rowElement;
