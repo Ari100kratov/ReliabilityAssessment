@@ -24,12 +24,17 @@ namespace ReliabilityAssessmentLibrary.Model
         /// <summary>
         /// Показатели центра распределения вариационного ряда
         /// </summary>
-        public IndicatorsDistributionCenter DistributionCenter { get; set; }
+        public IndicatorsDistributionCenter IndicatorsCenter { get; set; }
 
         /// <summary>
         /// Показатели вариации
         /// </summary>
         public IndicatorsVariation IndicatorsVariation { get; set; }
+
+        /// <summary>
+        /// ПОказатели формы распределения
+        /// </summary>
+        public IndicatorsDistributionForm IndicatorsForm { get; set; }
 
         /// <summary>
         /// Список значений вариационного ряда
@@ -61,10 +66,13 @@ namespace ReliabilityAssessmentLibrary.Model
         /// </summary>
         public List<XYPoint> XYFunctionList { get; private set; }
 
-        public VariationSeries(List<double> expData, int intervalCount = 0)
+        public VariationSeries(List<double> expData, int symbolsCount, int intervalCount = 0)
         {
             if (expData == null)
                 throw new ArgumentNullException(nameof(expData));
+
+            if (symbolsCount < 0)
+                throw new ArgumentOutOfRangeException(nameof(symbolsCount), "Can't be less 0");
 
             if (!expData.Any())
                 throw new ArgumentException("List is empty");
@@ -72,6 +80,7 @@ namespace ReliabilityAssessmentLibrary.Model
             if (intervalCount < 0)
                 throw new ArgumentOutOfRangeException(nameof(intervalCount), "Can't be less 0");
 
+            Settings.Default.Round = symbolsCount;
             this.IntervalCount = intervalCount;
             this.ExpDataList = expData;
             this.CreateVariationSeries();
@@ -79,6 +88,8 @@ namespace ReliabilityAssessmentLibrary.Model
             this.CalculateIndicatorsDistributionCenter();
             this.CalculateIndicatorsVariations();
             this.CalculateCharactVariable();
+            this.CalculateIndicatorsDistributionForm();
+            this.CalculateDistributionLaw();
             this.FillXYDiagramList();
         }
 
@@ -121,6 +132,8 @@ namespace ReliabilityAssessmentLibrary.Model
                 row.CumulativeFrequance = cumulativeHitCount;
                 row.XMinusXMultiplyF = (Math.Abs(row.MidInterval - averageMidInterval)) * row.HitCount;
                 row.XMinusXMultiplyFSquare = (Math.Pow(row.MidInterval - averageMidInterval, 2)) * row.HitCount;
+                row.XMinusXMultiplyCube = (Math.Pow(row.MidInterval - averageMidInterval, 3)) * row.HitCount;
+                row.XMinusXMultiplyFour = (Math.Pow(row.MidInterval - averageMidInterval, 4)) * row.HitCount;
                 row.RelativeFrequance = row.HitCount / (double)this.ExpDataList.Count();
             }
         }
@@ -169,13 +182,13 @@ namespace ReliabilityAssessmentLibrary.Model
                 * (((double)hitCountSum / 2) - preRowElementHitCountMedian));
 
             //Q1
-            var rowElementQ1 = this.ValueList.Find(x => x.UpperBound == rowElementMedian.LowerBound);
+            var rowElementQ1 = this.ValueList.Find(x => x.UpperBound == rowElementMedian.LowerBound)??this.ValueList.FirstOrDefault();
             var preRowElementHitCountQ1 = this.ValueList.Find(x => x.UpperBound == rowElementQ1.LowerBound)?.HitCount ?? 0;
             var intervalQ1 = rowElementQ1.UpperBound - rowElementQ1.LowerBound;
-            var preRowCumulativeQ1 = this.ValueList.Find(x=>x.UpperBound == rowElementQ1.LowerBound)?.CumulativeFrequance??0;
+            var preRowCumulativeQ1 = this.ValueList.Find(x => x.UpperBound == rowElementQ1.LowerBound)?.CumulativeFrequance ?? 0;
 
-            var q1 = rowElementQ1.LowerBound 
-                + ((intervalQ1 / rowElementQ1.HitCount) 
+            var q1 = rowElementQ1.LowerBound
+                + ((intervalQ1 / rowElementQ1.HitCount)
                 * (((double)hitCountSum / 4) - preRowCumulativeQ1));
 
             //Q2
@@ -220,7 +233,7 @@ namespace ReliabilityAssessmentLibrary.Model
             indicators.D1 = d1;
             indicators.D9 = d9;
 
-            this.DistributionCenter = indicators;
+            this.IndicatorsCenter = indicators;
         }
 
         /// <summary>
@@ -248,13 +261,13 @@ namespace ReliabilityAssessmentLibrary.Model
 
 
             // коэффициент вариации
-            var coefVariation = meanSquareDeviation / this.DistributionCenter.WeightedAVG * 100;
+            var coefVariation = meanSquareDeviation / this.IndicatorsCenter.WeightedAVG * 100;
 
             // линейный коэффициент вариации
-            var linearCoefVariation = avgLinearDeviation / this.DistributionCenter.WeightedAVG * 100;
+            var linearCoefVariation = avgLinearDeviation / this.IndicatorsCenter.WeightedAVG * 100;
 
             // коэффициент осцилляции
-            var coefOscillation = scope / this.DistributionCenter.WeightedAVG * 100;
+            var coefOscillation = scope / this.IndicatorsCenter.WeightedAVG * 100;
 
             var indicatorsVariation = new IndicatorsVariation
             {
@@ -277,7 +290,58 @@ namespace ReliabilityAssessmentLibrary.Model
         /// </summary>
         private void CalculateIndicatorsDistributionForm()
         {
-            //var quartilleVariation = 
+            // показатель квартильной вариации
+            var quartilleVariation = this.IndicatorsCenter.Q1 / this.IndicatorsCenter.WeightedAVG * 100;
+
+            // моментный коэффициент ассимметрии
+            var coeffAsymmetry = (this.ValueList.Select(x => x.XMinusXMultiplyCube).Sum()
+                / this.ValueList.LastOrDefault().CumulativeFrequance)
+                / Math.Pow(this.IndicatorsVariation.MeanSquareDeviation, 3);
+
+            // cредняя квадратичная ошибка коэффициента асимметрии
+            var meanSquareeCoeffAsymmetry = Math.Sqrt((6 * (this.ValueList.Count() - 2)) / (double)((this.ValueList.Count() + 1) * (this.ValueList.Count() + 3)));
+
+            // показатель асимметрии
+            var asymmetry = Math.Abs(coeffAsymmetry) / meanSquareeCoeffAsymmetry;
+
+            // коэффициент асимметрии Пирсона
+            var coeffAsymmetryPirson = (this.IndicatorsCenter.WeightedAVG - this.IndicatorsCenter.Mode) / this.IndicatorsVariation.MeanSquareDeviation;
+
+            // эксцесс
+            var excess = (this.ValueList.Select(x => x.XMinusXMultiplyFour).Sum()
+                / this.ValueList.LastOrDefault().CumulativeFrequance
+                / Math.Pow(this.IndicatorsVariation.MeanSquareDeviation, 4)) - 3;
+
+            // cредняя квадратическая ошибка коэффициента эксцесса
+            var rowCount = this.ValueList.Count();
+            var meanSquareCoeffExcess = Math.Sqrt((24 * rowCount * (rowCount - 2) * (rowCount - 3))
+                / (double)((Math.Pow(rowCount + 1, 2) * (rowCount + 3) * (rowCount + 5))));
+
+            // cущественность эксцесса
+            var estimateExcess = excess / meanSquareCoeffExcess;
+
+            var indicatorsDistribForm = new IndicatorsDistributionForm
+            {
+                QuartilleVariation = quartilleVariation,
+                CoeffAsymmetry = coeffAsymmetry,
+                MeanSquareeCoeffAsymmetry = meanSquareeCoeffAsymmetry,
+                Asymmetry = asymmetry,
+                CoeffAsymmetryPirson = coeffAsymmetryPirson,
+                Excess = excess,
+                MeanSquareCoeffExcess = meanSquareCoeffExcess,
+                EstimateExcess = estimateExcess
+            };
+
+            this.IndicatorsForm = indicatorsDistribForm;
+        }
+
+        /// <summary>
+        /// Рассчет значений для определения закона распределения
+        /// </summary>
+        private void CalculateDistributionLaw()
+        {
+            var lowerBoundByRuleSigm = this.IndicatorsCenter.WeightedAVG - 3 * this.IndicatorsVariation.MeanSquareDeviation;
+            var upperBoundByRuleSigm = this.IndicatorsCenter.WeightedAVG + 3 * this.IndicatorsVariation.MeanSquareDeviation;
         }
 
         /// <summary>

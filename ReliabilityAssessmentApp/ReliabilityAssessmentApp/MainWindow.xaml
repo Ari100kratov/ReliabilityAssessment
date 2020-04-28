@@ -7,10 +7,11 @@
         xmlns:local="clr-namespace:ReliabilityAssessmentApp"
         xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" xmlns:UI="clr-namespace:DevExpress.Xpf.ThemeEditor.UI;assembly=DevExpress.Xpf.ThemeEditor.v17.1" x:Class="ReliabilityAssessmentApp.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
+        Title="Статическая обработка данных о надежности" Height="1000" Width="1200">
     <Grid>
 
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -20,190 +21,192 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition />
+            <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
 
-        <dxe:TextEdit x:Name="teInput" Grid.Row="0" Grid.ColumnSpan="5" Height="50" Block.LineHeight="6" />
-        <dx:SimpleButton x:Name="sbStart" Content="Запуск" Grid.Column="6" Click="sbStart_Click"/>
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="1" Orientation="Horizontal">
+            <Label Content="Кол-во знаков после запятой" FontSize="16" Margin="0,5,5,5"></Label>
+            <dxe:SpinEdit dx:ThemeManager.ThemeName="none" ToolTip="Используется для отображения результатов. Проводимые рассчеты проводятся без округления" AllowNullInput="False" Value="2" x:Name="seRound" Width="60" FontSize="16" Margin="5,5,10,5" IsFloatValue="False" MaxValue="100" MinValue="0"></dxe:SpinEdit>
+            <Label Content="Разделитель" FontSize="16" Margin="5,5,5,5"></Label>
+            <dxe:TextEdit dx:ThemeManager.ThemeName="none" ToolTip="Разделитель между введенными числами. По умолчанию 'Пробел'" x:Name="teSeparator" Width="50" Margin="5"></dxe:TextEdit>
+            <dx:SimpleButton x:Name="sbLoadFromFile" Content="Загрузить данные из файла" Margin="5" dx:ThemeManager.ThemeName="None" FontSize="14" Click="sbLoadFromFile_Click"></dx:SimpleButton>
+        </StackPanel>
 
-        <Label x:Name="lblLess" Content="K-1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" />
-        <Label x:Name="lblMain" Content="K" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2"/>
-        <Label x:Name="lblMore" Content="K+1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="3"/>
+        <dxe:TextEdit dx:ThemeManager.ThemeName="none" x:Name="teInput" Grid.Row="1" Grid.ColumnSpan="5" Grid.Column="1" Height="40" Block.LineHeight="6" FontSize="14" />
+        <dx:SimpleButton Grid.Row="1" dx:ThemeManager.ThemeName="None" x:Name="sbStart" Content="Запуск" Grid.Column="6" Click="sbStart_Click" ClickMode="Press" Foreground="Black" BorderBrush="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontSize="14" FontWeight="Bold"/>
 
-        <Label Content="Хар. случайной величины" Grid.Row="2" RenderTransformOrigin="0.5,0.5" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Label x:Name="lblLess" Content="K-1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" FontSize="20" FontWeight="Bold" />
+        <Label x:Name="lblMain" Content="K" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2"  FontSize="20" FontWeight="Bold"/>
+        <Label x:Name="lblMore" Content="K+1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="3"  FontSize="20" FontWeight="Bold"/>
+        <ProgressBar  x:Name="pbLoading" Grid.Row="1" Grid.ColumnSpan="4" Value="70" Visibility="Collapsed" IsIndeterminate="False" Maximum="1000"/>
+        <TextBlock x:Name="tbLoading" Text="100%" FontSize="20" Grid.Row="1" Grid.ColumnSpan="4" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <Label Content="Вариационный ряд" Grid.Row="3" Grid.RowSpan="2" RenderTransformOrigin="0.5,0.5" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="18">
             <Label.LayoutTransform>
                 <RotateTransform Angle="-90"/>
             </Label.LayoutTransform>
         </Label>
 
-        <Label Content="Вариационный ряд" Grid.Row="3" RenderTransformOrigin="0.5,0.5" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Label Content="Гистограмма выборки" Grid.Row="5" RenderTransformOrigin="0.5,0.5" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="18">
             <Label.LayoutTransform>
                 <RotateTransform Angle="-90"/>
             </Label.LayoutTransform>
         </Label>
 
-        <Label Content="Гистограмма выборки" Grid.Row="4" RenderTransformOrigin="0.5,0.5" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Label.LayoutTransform>
-                <RotateTransform Angle="-90"/>
-            </Label.LayoutTransform>
-        </Label>
-
-        <Label Content="Гистограмма функции" Grid.Row="5" RenderTransformOrigin="0.5,0.5" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Label Content="Гистограмма функции" Grid.Row="6" RenderTransformOrigin="0.5,0.5" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="18">
             <Label.LayoutTransform>
                 <RotateTransform Angle="-90"/>
             </Label.LayoutTransform>
         </Label>
 
 
-        <dxg:GridControl x:Name="gcSeriesLess" Grid.Column="1" Grid.Row="3" SelectionMode="Row" Height="150">
+        <dxg:GridControl x:Name="gcSeriesLess" Grid.Column="1" Grid.Row="4" SelectionMode="Row" Height="150" dx:ThemeManager.ThemeName="Office2019Black">
             <dxg:GridControl.View>
                 <dxg:TableView AllowEditing="False" ShowGroupPanel="False" AutoWidth="True"/>
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="Number" Header="№" Width="60"/>
-            <dxg:GridColumn FieldName="Bounds" Header="Интервал"/>
-            <dxg:GridColumn FieldName="MidInterval" Header="Середина интервала"/>
-            <dxg:GridColumn FieldName="HitCount" Header="Частота"/>
+            <dxg:GridColumn FieldName="Number" Header="№" Width="40"/>
+            <dxg:GridColumn FieldName="Bounds" Header="Интервал" />
+            <dxg:GridColumn FieldName="MidIntervalR" Header="Середина интервала"/>
+            <dxg:GridColumn FieldName="HitCount" Header="Частота" Width="60"/>
 
-            <dxg:GridColumn FieldName="CumulativeFrequance" Header="Накопленная частота"/>
-            <dxg:GridColumn FieldName="RelativeFrequance" Header="Относительная частота"/>
-            <dxg:GridColumn FieldName="XMinusXMultiplyF" Header="|x - xср| * fi"/>
-            <dxg:GridColumn FieldName="XMinusXMultiplyFSquare" Header="(x-xср)^2·fi"/>
-            <dxg:GridColumn FieldName="XMultiplyF" Header="xi * fi"/>
+            <dxg:GridColumn FieldName="CumulativeFrequanceR" Header="Накопленная частота" Visible="False"/>
+            <dxg:GridColumn FieldName="RelativeFrequanceR" Header="Относительная частота"/>
+            <dxg:GridColumn FieldName="XMinusXMultiplyFR" Header="|x - xср| * fi" Visible="False"/>
+            <dxg:GridColumn FieldName="XMinusXMultiplyFSquareR" Header="(x-xср)^2·fi" Visible="False"/>
+            <dxg:GridColumn FieldName="XMinusXMultiplyCubeR" Header="(x-xср)^3·fi" Visible="False"/>
+            <dxg:GridColumn FieldName="XMinusXMultiplyFourR" Header="(x-xср)^4·fi" Visible="False"/>
+            <dxg:GridColumn FieldName="XMultiplyFR" Header="xi * fi" Visible="False"/>
 
         </dxg:GridControl>
 
-        <dxg:GridControl x:Name="gcSeriesMain" Grid.Column="2" Grid.Row="3" SelectionMode="Row" Height="150">
+        <dxg:GridControl x:Name="gcSeriesMain" Grid.Column="2" Grid.Row="4" SelectionMode="Row" Height="150" dx:ThemeManager.ThemeName="none">
             <dxg:GridControl.View>
                 <dxg:TableView AllowEditing="False" ShowGroupPanel="False" AutoWidth="True"/>
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="Number" Header="№" Width="60"/>
-            <dxg:GridColumn FieldName="Bounds" Header="Интервал"/>
-            <dxg:GridColumn FieldName="MidInterval" Header="Середина интервала"/>
-            <dxg:GridColumn FieldName="HitCount" Header="Частота"/>
+            <dxg:GridColumn FieldName="Number" Header="№" Width="40"/>
+            <dxg:GridColumn FieldName="Bounds" Header="Интервал" />
+            <dxg:GridColumn FieldName="MidIntervalR" Header="Середина интервала"/>
+            <dxg:GridColumn FieldName="HitCount" Header="Частота" Width="60"/>
 
-            <dxg:GridColumn FieldName="CumulativeFrequance" Header="Накопленная частота"/>
-            <dxg:GridColumn FieldName="RelativeFrequance" Header="Относительная частота"/>
-            <dxg:GridColumn FieldName="XMinusXMultiplyF" Header="|x - xср| * fi"/>
-            <dxg:GridColumn FieldName="XMinusXMultiplyFSquare" Header="(x-xср)^2·fi"/>
-            <dxg:GridColumn FieldName="XMultiplyF" Header="xi * fi"/>
+            <dxg:GridColumn FieldName="CumulativeFrequanceR" Header="Накопленная частота" Visible="False"/>
+            <dxg:GridColumn FieldName="RelativeFrequanceR" Header="Относительная частота"/>
+            <dxg:GridColumn FieldName="XMinusXMultiplyFR" Header="|x - xср| * fi" Visible="False"/>
+            <dxg:GridColumn FieldName="XMinusXMultiplyFSquareR" Header="(x-xср)^2·fi" Visible="False"/>
+            <dxg:GridColumn FieldName="XMinusXMultiplyCubeR" Header="(x-xср)^3·fi" Visible="False"/>
+            <dxg:GridColumn FieldName="XMinusXMultiplyFourR" Header="(x-xср)^4·fi" Visible="False"/>
+            <dxg:GridColumn FieldName="XMultiplyFR" Header="xi * fi" Visible="False"/>
         </dxg:GridControl>
 
-        <dxg:GridControl x:Name="gcSeriesMore" Grid.Column="3" Grid.Row="3" SelectionMode="Row" Height="150">
+        <dxg:GridControl x:Name="gcSeriesMore" Grid.Column="3" Grid.Row="4" SelectionMode="Row" Height="150" dx:ThemeManager.ThemeName="none">
             <dxg:GridControl.View>
                 <dxg:TableView AllowEditing="False" ShowGroupPanel="False" AutoWidth="True"/>
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="Number" Header="№" Width="60"/>
-            <dxg:GridColumn FieldName="Bounds" Header="Интервал"/>
-            <dxg:GridColumn FieldName="MidInterval" Header="Середина интервала"/>
-            <dxg:GridColumn FieldName="HitCount" Header="Частота"/>
+            <dxg:GridColumn FieldName="Number" Header="№" Width="40"/>
+            <dxg:GridColumn FieldName="Bounds" Header="Интервал" />
+            <dxg:GridColumn FieldName="MidIntervalR" Header="Середина интервала"/>
+            <dxg:GridColumn FieldName="HitCount" Header="Частота" Width="60"/>
 
-            <dxg:GridColumn FieldName="CumulativeFrequance" Header="Накопленная частота"/>
-            <dxg:GridColumn FieldName="RelativeFrequance" Header="Относительная частота"/>
-            <dxg:GridColumn FieldName="XMinusXMultiplyF" Header="|x - xср| * fi"/>
-            <dxg:GridColumn FieldName="XMinusXMultiplyFSquare" Header="(x-xср)^2·fi"/>
-            <dxg:GridColumn FieldName="XMultiplyF" Header="xi * fi"/>
+            <dxg:GridColumn FieldName="CumulativeFrequanceR" Header="Накопленная частота" Visible="False"/>
+            <dxg:GridColumn FieldName="RelativeFrequanceR" Header="Относительная частота"/>
+            <dxg:GridColumn FieldName="XMinusXMultiplyFR" Header="|x - xср| * fi" Visible="False"/>
+            <dxg:GridColumn FieldName="XMinusXMultiplyFSquareR" Header="(x-xср)^2·fi" Visible="False"/>
+            <dxg:GridColumn FieldName="XMinusXMultiplyCubeR" Header="(x-xср)^3·fi" Visible="False"/>
+            <dxg:GridColumn FieldName="XMinusXMultiplyFourR" Header="(x-xср)^4·fi" Visible="False"/>
+            <dxg:GridColumn FieldName="XMultiplyFR" Header="xi * fi" Visible="False"/>
         </dxg:GridControl>
 
 
-        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
             <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center">
-                <Label Content="Математическое ожидание"/>
-                <Label Content="Оценка дисперсии"/>
-                <Label Content="Сред. кв. отклонение"/>
-                <Label Content="Коэффициент вариации"/>
-                <Label Content="Ширина интервала"/>
-                <Label Content="Количество интервалов"/>
-                <Label Content="Количество инверсий"/>
+                <Label Content="Ширина интервала" FontSize="16" />
+                <Label Content="Количество интервалов" FontSize="16"/>
+                <Label Content="Количество инверсий" FontSize="16"/>
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center">
-                <Label x:Name="lblMathExpLess" Content="35,66"/>
-                <Label x:Name="lblDispersionLess" Content="35,66"/>
-                <Label x:Name="lblSquareLess" Content="35,66"/>
-                <Label x:Name="lblCoefVariationLess" Content="35,66"/>
-                <Label x:Name="lblIntervalSizeLess"  Content="44,55"/>
-                <Label x:Name="lblIntervalCountLess"  Content="15"/>
-                <Label x:Name="lblInversionCountLess"  Content="10"/>
+                <Label x:Name="lblIntervalSizeLess"  Content="00" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" FontWeight="Bold" />
+                <Label x:Name="lblIntervalCountLess"  Content="00" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" FontWeight="Bold"/>
+                <Label x:Name="lblInversionCountLess"  Content="00" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" FontWeight="Bold"/>
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
+        <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal">
             <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center">
-                <Label Content="Математическое ожидание"/>
-                <Label Content="Оценка дисперсии"/>
-                <Label Content="Сред. кв. отклонение"/>
-                <Label Content="Коэффициент вариации"/>
-                <Label Content="Ширина интервала"/>
-                <Label Content="Количество интервалов"/>
-                <Label Content="Количество инверсий"/>
+                <Label Content="Ширина интервала" FontSize="16" />
+                <Label Content="Количество интервалов" FontSize="16" />
+                <Label Content="Количество инверсий" FontSize="16" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center">
-                <Label x:Name="lblMathExpMain" Content="35,66"/>
-                <Label x:Name="lblDispersionMain" Content="35,66"/>
-                <Label x:Name="lblSquareMain" Content="35,66"/>
-                <Label x:Name="lblCoefVariationMain" Content="35,66"/>
-                <Label x:Name="lblIntervalSizeMain"  Content="44,55"/>
-                <Label x:Name="lblIntervalCountMain"  Content="15"/>
-                <Label x:Name="lblInversionCountMain"  Content="10"/>
+                <Label x:Name="lblIntervalSizeMain"  Content="00" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" FontWeight="Bold"/>
+                <Label x:Name="lblIntervalCountMain"  Content="00" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" FontWeight="Bold"/>
+                <Label x:Name="lblInversionCountMain"  Content="00" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" FontWeight="Bold"/>
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Grid.Row="2" Grid.Column="3" Orientation="Horizontal">
+        <StackPanel Grid.Row="3" Grid.Column="3" Orientation="Horizontal">
             <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center">
-                <Label Content="Математическое ожидание"/>
-                <Label Content="Оценка дисперсии"/>
-                <Label Content="Сред. кв. отклонение"/>
-                <Label Content="Коэффициент вариации"/>
-                <Label Content="Ширина интервала"/>
-                <Label Content="Количество интервалов"/>
-                <Label Content="Количество инверсий"/>
+                <Label Content="Ширина интервала" FontSize="16" />
+                <Label Content="Количество интервалов" FontSize="16" />
+                <Label Content="Количество инверсий" FontSize="16" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center">
-                <Label x:Name="lblMathExpMore" Content="35,66"/>
-                <Label x:Name="lblDispersionMore" Content="35,66"/>
-                <Label x:Name="lblSquareMore" Content="35,66"/>
-                <Label x:Name="lblCoefVariationMore" Content="35,66"/>
-                <Label x:Name="lblIntervalSizeMore"  Content="44,55"/>
-                <Label x:Name="lblIntervalCountMore"  Content="15"/>
-                <Label x:Name="lblInversionCountMore"  Content="10"/>
+                <Label x:Name="lblIntervalSizeMore"  Content="00" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" FontWeight="Bold"/>
+                <Label x:Name="lblIntervalCountMore"  Content="00" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" FontWeight="Bold"/>
+                <Label x:Name="lblInversionCountMore"  Content="00" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" FontWeight="Bold"/>
             </StackPanel>
         </StackPanel>
 
-        <dxc:ChartControl x:Name="chartSampleLess" Grid.Row="4" Grid.Column="1" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+        <dxc:ChartControl x:Name="chartSampleLess" Grid.Row="5" Grid.Column="1" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
             <dxc:XYDiagram2D>
-                <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" BarWidth="1" LabelsVisibility="True"/>
+                <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" BarWidth="0.9" CrosshairLabelPattern="{}{V:#.0000}"/>
+                <dxc:LineSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" CrosshairLabelPattern="{}{V:#.0000}">
+                </dxc:LineSeries2D>
             </dxc:XYDiagram2D>
         </dxc:ChartControl>
 
-        <dxc:ChartControl x:Name="chartSampleMain" Grid.Row="4" Grid.Column="2" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+        <dxc:ChartControl dx:ThemeManager.ThemeName="none"  x:Name="chartSampleMain" Grid.Row="5" Grid.Column="2" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+            <dxc:ChartControl.Annotations >
+                <dxc:Annotation >
+                    <TextBlock>
+                        gsdhgsdhhdfhdf
+                    <dxe:HyperlinkEdit>
+                        444444444444444
+                    </dxe:HyperlinkEdit>
+                    </TextBlock>
+                </dxc:Annotation>
+            </dxc:ChartControl.Annotations>
             <dxc:XYDiagram2D>
-                <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" BarWidth="1" LabelsVisibility="True"/>
+                <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" BarWidth="0.9"/>
+                <dxc:LineSeries2D ArgumentDataMember="Argument" ValueDataMember="Value">
+                </dxc:LineSeries2D>
             </dxc:XYDiagram2D>
         </dxc:ChartControl>
-        <dxc:ChartControl x:Name="chartSampleMore" Grid.Row="4" Grid.Column="3" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+        <dxc:ChartControl dx:ThemeManager.ThemeName="none" x:Name="chartSampleMore" Grid.Row="5" Grid.Column="3" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
             <dxc:XYDiagram2D>
-                <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" BarWidth="1" LabelsVisibility="True"/>
+                <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" BarWidth="0.9"/>
+                <dxc:LineSeries2D ArgumentDataMember="Argument" ValueDataMember="Value">
+                </dxc:LineSeries2D>
             </dxc:XYDiagram2D>
         </dxc:ChartControl>
 
 
-        <dxc:ChartControl x:Name="chartFunctionLess" Grid.Row="5" Grid.Column="1" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+        <dxc:ChartControl dx:ThemeManager.ThemeName="none" x:Name="chartFunctionLess" Grid.Row="6" Grid.Column="1" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
             <dxc:XYDiagram2D>
-                <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" BarWidth="1" LabelsVisibility="True"/>
+                <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" LabelsVisibility="True" ValueDataMember="Value" BarWidth="0.9" />
             </dxc:XYDiagram2D>
         </dxc:ChartControl>
 
-        <dxc:ChartControl x:Name="chartFunctionMain" Grid.Row="5" Grid.Column="2" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+        <dxc:ChartControl dx:ThemeManager.ThemeName="none" x:Name="chartFunctionMain" Grid.Row="6" Grid.Column="2" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
             <dxc:XYDiagram2D>
-                <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" BarWidth="1" LabelsVisibility="True"/>
+                <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" LabelsVisibility="True" BarWidth="0.9"/>
             </dxc:XYDiagram2D>
         </dxc:ChartControl>
 
-        <dxc:ChartControl x:Name="chartFunctionMore" Grid.Row="5" Grid.Column="3" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+        <dxc:ChartControl dx:ThemeManager.ThemeName="none" x:Name="chartFunctionMore" Grid.Row="6" Grid.Column="3" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
             <dxc:XYDiagram2D>
-                <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" BarWidth="1" LabelsVisibility="True"/>
+                <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" LabelsVisibility="True" BarWidth="0.9"/>
             </dxc:XYDiagram2D>
         </dxc:ChartControl>
     </Grid>

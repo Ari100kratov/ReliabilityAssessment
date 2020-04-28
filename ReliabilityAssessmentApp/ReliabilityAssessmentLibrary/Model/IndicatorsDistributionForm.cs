@@ -25,5 +25,30 @@ namespace ReliabilityAssessmentLibrary.Model
         /// Средняя квадратичная ошибка коэффициента асимметрии
         /// </summary>
         public double MeanSquareeCoeffAsymmetry { get; set; }
+
+        /// <summary>
+        /// Показатель асимметрии
+        /// </summary>
+        public double Asymmetry { get; set; }
+
+        /// <summary>
+        /// Коэффициент асимметрии Пирсона
+        /// </summary>
+        public double CoeffAsymmetryPirson { get; set; }
+
+        /// <summary>
+        /// Эксцесс
+        /// </summary>
+        public double Excess { get; set; }
+
+        /// <summary>
+        /// Cредняя квадратическая ошибка коэффициента эксцесса
+        /// </summary>
+        public double MeanSquareCoeffExcess { get; set; }
+
+        /// <summary>
+        /// Cущественность эксцесса
+        /// </summary>
+        public double EstimateExcess { get; set; }
     }
 }

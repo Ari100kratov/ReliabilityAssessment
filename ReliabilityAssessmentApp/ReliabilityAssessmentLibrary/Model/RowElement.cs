@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace ReliabilityAssessmentLibrary.Model
 {
     /// <summary>
@@ -52,11 +54,36 @@ namespace ReliabilityAssessmentLibrary.Model
         public double XMinusXMultiplyFSquare { get; set; }
 
         /// <summary>
+        /// (x - xср)^3 * f 
+        /// </summary>
+        public double XMinusXMultiplyCube { get; set; }
+
+        /// <summary>
+        /// (x - xср)^4 * f 
+        /// </summary>
+        public double XMinusXMultiplyFour { get; set; }
+
+        /// <summary>
         /// Относительная частота
         /// </summary>
         public double RelativeFrequance { get; set; }
 
-        public string Bounds => $"{this.LowerBound} - {this.UpperBound}";
+
+        public string Bounds => $"{Math.Round(this.LowerBound, Settings.Default.Round)} - {Math.Round(this.UpperBound, Settings.Default.Round)}";
+
+        public double MidIntervalR => Math.Round(this.MidInterval, Settings.Default.Round);
+
+        public double XMultiplyFR => Math.Round(this.XMultiplyF, Settings.Default.Round);
+
+        public double XMinusXMultiplyFR => Math.Round(this.XMinusXMultiplyF, Settings.Default.Round);
+
+        public double XMinusXMultiplyFSquareR => Math.Round(this.XMinusXMultiplyFSquare, Settings.Default.Round);
+
+        public double XMinusXMultiplyCubeR => Math.Round(this.XMinusXMultiplyCube, Settings.Default.Round);
+
+        public double XMinusXMultiplyFourR => Math.Round(this.XMinusXMultiplyFour, Settings.Default.Round);
+
+        public double RelativeFrequanceR => Math.Round(this.RelativeFrequance, Settings.Default.Round);
 
     }
 }
