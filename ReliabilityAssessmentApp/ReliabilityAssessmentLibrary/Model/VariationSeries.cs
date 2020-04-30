@@ -204,6 +204,9 @@ namespace ReliabilityAssessmentLibrary.Model
                 + ((intervalQ3 / rowElementQ3.HitCount)
                 * (((double)hitCountSum * 3 / 4) - preRowCumulativeQ3));
 
+            // Квартильный коэффициент дифференциации
+            var quartilCoeff = q1 / q3;
+
             //D1
             var findD1 = (double)1 / 10 * hitCountSum;
             var rowElementD1 = this.ValueList.Find(x => x.CumulativeFrequance >= findD1);
@@ -227,6 +230,7 @@ namespace ReliabilityAssessmentLibrary.Model
             indicators.WeightedAVG = weightedAVG;
             indicators.Mode = mode;
             indicators.Median = median;
+            indicators.QuartilCoeff = quartilCoeff;
             indicators.Q1 = q1;
             indicators.Q2 = q2;
             indicators.Q3 = q3;

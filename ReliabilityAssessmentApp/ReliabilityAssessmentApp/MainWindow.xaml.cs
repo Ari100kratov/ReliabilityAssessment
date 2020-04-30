@@ -36,12 +36,18 @@ namespace ReliabilityAssessmentApp
         public MainWindow()
         {
             InitializeComponent();
+            //this.chSimpleMainAnnotation.Content = this.tbTest;
+
         }
 
         private void sbStart_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                this.chartLessAnnotation.Visibility = Visibility.Collapsed;
+                this.chartMoreAnnotation.Visibility = Visibility.Collapsed;
+                this.chartMainAnnotation.Visibility = Visibility.Collapsed;
+
                 BackgroundWorker worker = new BackgroundWorker();
                 worker.WorkerReportsProgress = true;
                 worker.DoWork += worker_DoWork;
@@ -79,12 +85,11 @@ namespace ReliabilityAssessmentApp
                 this._variationSeriesMain = new VariationSeries(expData, Settings.Default.Round);
                 this._variationSeriesLess = new VariationSeries(expData, Settings.Default.Round, this._variationSeriesMain.IntervalCount - 1);
                 this._variationSeriesMore = new VariationSeries(expData, Settings.Default.Round, this._variationSeriesMain.IntervalCount + 1);
-                var annotation = new Annotation();
-                annotation.Content = "Моя аннтотация";
                 this.pbLoading.Visibility = Visibility.Visible;
-                this.chartSampleLess.Annotations.Add(annotation);
                 this.tbLoading.Visibility = Visibility.Visible;
+
                 worker.RunWorkerAsync();
+
             }
             catch (Exception ex)
             {
@@ -92,15 +97,27 @@ namespace ReliabilityAssessmentApp
             }
         }
 
+        public class Series
+        {
+            public int Id { get; set; }
+
+            public int InversionCount { get; set; }
+
+            public int IntervalCount { get; set; }
+        }
+
         void worker_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                for (int i = 0; i <= 1000; i++)
+                for (int i = 0; i <= 1001; i++)
                 {
 
                     (sender as BackgroundWorker).ReportProgress(i);
-                    Thread.Sleep(2);
+                    if (i < 1000)
+                        Thread.Sleep(2);
+                    else
+                        Thread.Sleep(1000);
                 }
             }
             catch (Exception ex)
@@ -113,8 +130,8 @@ namespace ReliabilityAssessmentApp
         {
             try
             {
-                pbLoading.Value = e.ProgressPercentage;
-                var calcValue = (double)e.ProgressPercentage / 10 + 0.01;
+                pbLoading.Value = e.ProgressPercentage > 1000 ? 1000 : e.ProgressPercentage;
+                var calcValue = (double)e.ProgressPercentage / 10;
                 var percent = $"{calcValue.ToString("00.00")} %";
                 var text = string.Empty;
 
@@ -156,13 +173,61 @@ namespace ReliabilityAssessmentApp
                 }
                 else
                 {
+                    text = "Готово";
+                }
+
+                tbLoading.Text = $"{text} {percent}%";
+
+                if (e.ProgressPercentage == 1001)
+                {
+                    this.pbLoading.Value = e.ProgressPercentage;
                     this.tbLoading.Visibility = Visibility.Collapsed;
                     this.pbLoading.Visibility = Visibility.Collapsed;
                     this.tbLoading.Text = string.Empty;
                     this.pbLoading.Value = 0;
-                }
+                    var series1 = new Series
+                    {
+                        Id = 1,
+                        IntervalCount = this._variationSeriesLess.IntervalCount,
+                        InversionCount = this._variationSeriesLess.InversionCount
+                    };
 
-                tbLoading.Text = $"{text} {percent}%";
+                    var series2 = new Series
+                    {
+                        Id = 2,
+                        IntervalCount = this._variationSeriesMain.IntervalCount,
+                        InversionCount = this._variationSeriesMain.InversionCount
+                    };
+
+                    var series3 = new Series
+                    {
+                        Id = 3,
+                        IntervalCount = this._variationSeriesMore.IntervalCount,
+                        InversionCount = this._variationSeriesMore.InversionCount
+                    };
+
+                    var seriesList = new List<Series>
+                {
+                    series1,
+                    series2,
+                    series3
+                };
+
+                    var minInversion = seriesList.OrderBy(x => x.InversionCount).FirstOrDefault();
+                    var sameCountInversionList = seriesList.FindAll(x => x.InversionCount == minInversion.InversionCount);
+
+                    if (sameCountInversionList.Count() > 1)
+                    {
+                        minInversion = sameCountInversionList.OrderByDescending(x => x.IntervalCount).FirstOrDefault();
+                    }
+
+                    switch (minInversion.Id)
+                    {
+                        case (1): this.chartLessAnnotation.Visibility = Visibility.Visible; break;
+                        case (2): this.chartMainAnnotation.Visibility = Visibility.Visible; break;
+                        case (3): this.chartMoreAnnotation.Visibility = Visibility.Visible; break;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -204,6 +269,42 @@ namespace ReliabilityAssessmentApp
             catch (IOException ex)
             {
                 MessageBox.Show("УПС! Нельзя прочитать выбранный файл." + Environment.NewLine + ex.Message, "Ошибка чтения файла", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("УПС! Что-то пошло не так." + Environment.NewLine + ex.Message, "Возникла непредвиденная ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void chartMainAnnotation_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                ResultWindow.Execute(this._variationSeriesMain);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("УПС! Что-то пошло не так." + Environment.NewLine + ex.Message, "Возникла непредвиденная ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void chartLessAnnotation_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                ResultWindow.Execute(this._variationSeriesLess);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("УПС! Что-то пошло не так." + Environment.NewLine + ex.Message, "Возникла непредвиденная ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void chartMoreAnnotation_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                ResultWindow.Execute(this._variationSeriesMore);
             }
             catch (Exception ex)
             {

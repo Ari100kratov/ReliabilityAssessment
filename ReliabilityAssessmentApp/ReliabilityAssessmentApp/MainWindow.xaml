@@ -158,7 +158,25 @@
             </StackPanel>
         </StackPanel>
 
-        <dxc:ChartControl x:Name="chartSampleLess" Grid.Row="5" Grid.Column="1" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+        <dxc:ChartControl dx:ThemeManager.ThemeName="none" x:Name="chartSampleLess" Grid.Row="5" Grid.Column="1" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+            <dxc:ChartControl.Annotations>
+                <dxc:Annotation Visibility="Collapsed"  Width="350"  LabelMode="True" x:Name="chartLessAnnotation" RuntimeMoving="True" RuntimeResizing="True" RuntimeRotation="True" RuntimeAnchoring="True" MouseDoubleClick="chartLessAnnotation_MouseDoubleClick">
+                    <dxc:Annotation.ContentTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock x:Name="tbShowResultLess" TextWrapping="Wrap" Text="Данный вариационный ряд считаем лучшим, т.к. количество инверсий минимально, а количество интервалов наибольшее"></TextBlock>
+                                <TextBlock Text="*Двойной щелчок - показать результаты" FontStyle="Italic"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+
+                    </dxc:Annotation.ContentTemplate>
+                    <dxc:Annotation.ShapePosition>
+                        <dxc:RelativePosition ConnectorLength="250" 
+                                       Angle="0"/>
+                    </dxc:Annotation.ShapePosition>
+                </dxc:Annotation>
+            </dxc:ChartControl.Annotations>
+
             <dxc:XYDiagram2D>
                 <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" BarWidth="0.9" CrosshairLabelPattern="{}{V:#.0000}"/>
                 <dxc:LineSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" CrosshairLabelPattern="{}{V:#.0000}">
@@ -167,14 +185,21 @@
         </dxc:ChartControl>
 
         <dxc:ChartControl dx:ThemeManager.ThemeName="none"  x:Name="chartSampleMain" Grid.Row="5" Grid.Column="2" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
-            <dxc:ChartControl.Annotations >
-                <dxc:Annotation >
-                    <TextBlock>
-                        gsdhgsdhhdfhdf
-                    <dxe:HyperlinkEdit>
-                        444444444444444
-                    </dxe:HyperlinkEdit>
-                    </TextBlock>
+            <dxc:ChartControl.Annotations>
+                <dxc:Annotation Visibility="Collapsed"  Width="350"  LabelMode="True" x:Name="chartMainAnnotation" RuntimeMoving="True" RuntimeResizing="True" RuntimeRotation="True" RuntimeAnchoring="True" MouseDoubleClick="chartMainAnnotation_MouseDoubleClick">
+                    <dxc:Annotation.ContentTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock x:Name="tbShowResultMain" TextWrapping="Wrap" Text="Данный вариационный ряд считаем лучшим, т.к. количество инверсий минимально, а количество интервалов наибольшее"></TextBlock>
+                                <TextBlock Text="*Двойной щелчок - показать результаты" FontStyle="Italic"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                        
+                    </dxc:Annotation.ContentTemplate>
+                    <dxc:Annotation.ShapePosition>
+                        <dxc:RelativePosition ConnectorLength="250" 
+                                       Angle="0"/>
+                    </dxc:Annotation.ShapePosition>
                 </dxc:Annotation>
             </dxc:ChartControl.Annotations>
             <dxc:XYDiagram2D>
@@ -184,6 +209,24 @@
             </dxc:XYDiagram2D>
         </dxc:ChartControl>
         <dxc:ChartControl dx:ThemeManager.ThemeName="none" x:Name="chartSampleMore" Grid.Row="5" Grid.Column="3" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+            <dxc:ChartControl.Annotations>
+                <dxc:Annotation  Visibility="Collapsed" Width="350"  LabelMode="True" x:Name="chartMoreAnnotation" RuntimeMoving="True" RuntimeResizing="True" RuntimeRotation="True" RuntimeAnchoring="True" MouseDoubleClick="chartMoreAnnotation_MouseDoubleClick">
+                    <dxc:Annotation.ContentTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock x:Name="tbShowResultMore" TextWrapping="Wrap" Text="Данный вариационный ряд считаем лучшим, т.к. количество инверсий минимально, а количество интервалов наибольшее"></TextBlock>
+                                <TextBlock Text="*Двойной щелчок - показать результаты" FontStyle="Italic"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+
+                    </dxc:Annotation.ContentTemplate>
+                    <dxc:Annotation.ShapePosition>
+                        <dxc:RelativePosition ConnectorLength="250" 
+                                       Angle="0"/>
+                    </dxc:Annotation.ShapePosition>
+                </dxc:Annotation>
+            </dxc:ChartControl.Annotations>
+
             <dxc:XYDiagram2D>
                 <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" BarWidth="0.9"/>
                 <dxc:LineSeries2D ArgumentDataMember="Argument" ValueDataMember="Value">
