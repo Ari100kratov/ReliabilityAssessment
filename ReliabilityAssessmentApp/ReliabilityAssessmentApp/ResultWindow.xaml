@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReliabilityAssessmentApp"
         mc:Ignorable="d"
-        Title="ResultWindow" Height="700" Width="1100" Loaded="DXRibbonWindow_Loaded">
+        Title="Результаты вычислений" Height="800" Width="1100" Loaded="DXRibbonWindow_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -19,8 +19,8 @@
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        
-            <dxlc:GroupBox CornerRadius="10" ShowShadow="Always" Header="Показатели центра распределения" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" >
+
+        <dxlc:GroupBox CornerRadius="10" ShowShadow="Always" Header="Показатели центра распределения" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" >
             <ScrollViewer VerticalScrollBarVisibility="Auto" >
                 <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
                     <Grid.ColumnDefinitions>
@@ -65,7 +65,7 @@
             </ScrollViewer>
         </dxlc:GroupBox>
 
-            <dxlc:GroupBox Grid.Column="1" Grid.Row="0" CornerRadius="10" ShowShadow="Always" Header="Показатели вариации" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+        <dxlc:GroupBox Grid.Column="1" Grid.Row="0" CornerRadius="10" ShowShadow="Always" Header="Показатели вариации" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <ScrollViewer  VerticalScrollBarVisibility="Auto" >
                 <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
                     <Grid.ColumnDefinitions>
@@ -130,7 +130,7 @@
 
         </dxlc:GroupBox>
 
-            <dxlc:GroupBox Grid.Column="0" Grid.Row="1" CornerRadius="10" ShowShadow="Always" Header="Показатели формы распределения" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+        <dxlc:GroupBox Grid.Column="0" Grid.Row="1" CornerRadius="10" ShowShadow="Always" Header="Показатели формы распределения" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <ScrollViewer VerticalScrollBarVisibility="Auto" >
 
                 <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
@@ -184,8 +184,9 @@
 
         </dxlc:GroupBox>
 
-        <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Auto" >
-            <dxlc:GroupBox Grid.Column="1" Grid.Row="0" CornerRadius="10" ShowShadow="Always" Header="Признаки нормального распределения" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+        
+            <dxlc:GroupBox Grid.Column="1" Grid.Row="1" CornerRadius="10" ShowShadow="Always" Header="Признаки нормального распределения" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+            <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Auto" >
                 <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
@@ -200,26 +201,58 @@
                         <RowDefinition Height="auto"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Margin="5" x:Name="tbRule3Sigm" Text="Выполнение правила «трёх» сигм. Практически все значения нормальной случайной величины находятся в интервале (μ-3σ; μ-3σ)." FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="5" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Text="НАХОДИТСЯ В РАЗРАБОТКЕ"></TextBlock>
+                    <TextBlock  Padding="5" x:Name="tbValuesIsEquals" Text="У нормального распределения математическое ожидание, мода и медиана близки по значениям." FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                    <TextBlock  Padding="5" x:Name="tbRule3Sigm" Text="Выполнение правила «трёх» сигм. Практически все значения нормальной случайной величины находятся в интервале (μ-3σ; μ-3σ)." FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
+                    <TextBlock  Padding="5" x:Name="tbCoeffAssymetryAndExcessEqualsZero" Text="Коэффициенты асимметрии и эксцесса нормального распределения близки к нулю." FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
+                    <TextBlock  Padding="5" x:Name="tbInsignificantDeviation" Text="Если Ex/sEx меньше 3, то отклонение от нормального распределения считается несущественным." FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
+                    <TextBlock  Padding="5" x:Name="tbAsAndEx" Text="В случае нормального распределения справедливо следующее условие: |As| меньше 3*sAs и |Ex| меньше 3*sEx" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
                 </Grid>
-            </dxlc:GroupBox>
-        </ScrollViewer>
+            </ScrollViewer>
+        </dxlc:GroupBox>
 
 
-        <ScrollViewer Grid.ColumnSpan="2" Grid.Row="2" VerticalScrollBarVisibility="Auto" >
-            <dxlc:GroupBox Grid.Column="1" Grid.Row="0" CornerRadius="10" ShowShadow="Always" Header="Выводы - находится в разработке" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+            <dxlc:GroupBox Grid.ColumnSpan="2" Grid.Row="2" CornerRadius="10" ShowShadow="Always" Header="Выводы" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+            <ScrollViewer Grid.ColumnSpan="2" Grid.Row="2" VerticalScrollBarVisibility="Auto" >
                 <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
+
+
+                    <TextBlock Margin="5" FontSize="14" x:Name="tbResultQuartils" Grid.Column="0" Grid.Row="0" FontWeight="Normal" TextWrapping="Wrap">
+                         Таким образом, 25% единиц совокупности будут меньше величины Q1, 25% будут заключены между Q1 и Q2, 25% - между Q2 и Q3. Остальные 25% превосходят Q3.
+                    </TextBlock>
+
+                    <TextBlock Margin="5" FontSize="14" x:Name="tbResultDecils" Grid.Column="0" Grid.Row="1" FontWeight="Normal" TextWrapping="Wrap">
+                         Исходя из Децилей 10% единиц совокупности будут меньше по величине D1; 80% будут заключены между D1 и D9; остальные 10% превосходят D9.
+                    </TextBlock>
+
+                    <TextBlock Margin="5" FontSize="14" x:Name="tbRateVariations" Grid.Column="0" Grid.Row="2" FontWeight="Normal" TextWrapping="Wrap">
+                         Поскольку коэффициент асимметрии ≤ 30%, то совокупность однородна, а вариация слабая. Полученным результатам можно доверять.
+                    </TextBlock>
+
+                    <TextBlock Margin="5" FontSize="14" x:Name="tbRateAsymmetry" Grid.Column="0" Grid.Row="3" FontWeight="Normal" TextWrapping="Wrap">
+                         Отрицательный знак коэффициента асиммметрии свидетельствует о наличии левосторонней асимметрии.
+                    </TextBlock>
+
+                    <TextBlock Margin="5" FontSize="14" x:Name="tbAsymmetryValue" Grid.Column="0" Grid.Row="4" FontWeight="Normal" TextWrapping="Wrap">
+                         В анализируемом ряду распределения наблюдается несущественная асимметрия.
+                    </TextBlock>
+
+                    <TextBlock  Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Margin="10" FontSize="18" x:Name="tbLaw" Grid.Column="0" Grid.Row="5" FontWeight="Bold" TextWrapping="Wrap">
+                         В анализируемом ряду распределения наблюдается несущественная асимметрия.
+                    </TextBlock>
                 </Grid>
-            </dxlc:GroupBox>
-        </ScrollViewer>
+            </ScrollViewer>
+        </dxlc:GroupBox>
     </Grid>
 
 </dxr:DXRibbonWindow>

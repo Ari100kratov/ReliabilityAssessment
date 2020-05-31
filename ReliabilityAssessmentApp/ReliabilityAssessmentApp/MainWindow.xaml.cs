@@ -1,26 +1,13 @@
-﻿using DevExpress.Spreadsheet.Charts;
-using DevExpress.Xpf.Charts;
-using DevExpress.Xpf.Ribbon;
-using ReliabilityAssessmentLibrary;
+﻿using DevExpress.Xpf.Ribbon;
 using ReliabilityAssessmentLibrary.Model;
-using ReliabilityAssessmentLibrary.Model.ChartModel;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ReliabilityAssessmentApp
 {
@@ -36,8 +23,6 @@ namespace ReliabilityAssessmentApp
         public MainWindow()
         {
             InitializeComponent();
-            //this.chSimpleMainAnnotation.Content = this.tbTest;
-
         }
 
         private void sbStart_Click(object sender, RoutedEventArgs e)
@@ -132,7 +117,7 @@ namespace ReliabilityAssessmentApp
             {
                 pbLoading.Value = e.ProgressPercentage > 1000 ? 1000 : e.ProgressPercentage;
                 var calcValue = (double)e.ProgressPercentage / 10;
-                var percent = $"{calcValue.ToString("00.00")} %";
+                var percent = $"{calcValue.ToString("00.00")}%";
                 var text = string.Empty;
 
                 if (e.ProgressPercentage < 250)
@@ -176,7 +161,7 @@ namespace ReliabilityAssessmentApp
                     text = "Готово";
                 }
 
-                tbLoading.Text = $"{text} {percent}%";
+                tbLoading.Text = $"{text} {percent}";
 
                 if (e.ProgressPercentage == 1001)
                 {

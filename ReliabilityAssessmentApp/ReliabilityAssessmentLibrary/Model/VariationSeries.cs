@@ -182,7 +182,7 @@ namespace ReliabilityAssessmentLibrary.Model
                 * (((double)hitCountSum / 2) - preRowElementHitCountMedian));
 
             //Q1
-            var rowElementQ1 = this.ValueList.Find(x => x.UpperBound == rowElementMedian.LowerBound)??this.ValueList.FirstOrDefault();
+            var rowElementQ1 = this.ValueList.Find(x => x.UpperBound == rowElementMedian.LowerBound) ?? this.ValueList.FirstOrDefault();
             var preRowElementHitCountQ1 = this.ValueList.Find(x => x.UpperBound == rowElementQ1.LowerBound)?.HitCount ?? 0;
             var intervalQ1 = rowElementQ1.UpperBound - rowElementQ1.LowerBound;
             var preRowCumulativeQ1 = this.ValueList.Find(x => x.UpperBound == rowElementQ1.LowerBound)?.CumulativeFrequance ?? 0;
@@ -372,7 +372,7 @@ namespace ReliabilityAssessmentLibrary.Model
                 var xyPointFunction = new XYPoint
                 {
                     Argument = argument,
-                    Value = valuePointFunction
+                    Value = (double)valuePointFunction / this.ExpDataList.Count()
                 };
 
                 xyFunctionList.Add(xyPointFunction);

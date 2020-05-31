@@ -11,5 +11,7 @@ namespace ReliabilityAssessmentLibrary.Model.ChartModel
         public string Argument { get; set; }
 
         public double Value { get; set; }
+
+        public double ValueRound => Math.Round(this.Value, Settings.Default.Round);
     }
 }
