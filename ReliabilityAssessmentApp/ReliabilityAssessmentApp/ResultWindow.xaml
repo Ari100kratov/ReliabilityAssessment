@@ -4,9 +4,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         xmlns:local="clr-namespace:ReliabilityAssessmentApp"
-        mc:Ignorable="d"
-        Title="Результаты вычислений" Height="800" Width="1100" Loaded="DXRibbonWindow_Loaded">
+                    xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
+                    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                    mc:Ignorable="d"
+        Title="Результаты вычислений" Height="800" Width="1100" Loaded="DXRibbonWindow_Loaded" UseLayoutRounding="True" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -20,7 +23,7 @@
         </Grid.RowDefinitions>
 
 
-        <dxlc:GroupBox CornerRadius="10" ShowShadow="Always" Header="Показатели центра распределения" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" >
+        <dxlc:GroupBox CornerRadius="10" ShowShadow="Always" Header="Гистограмма выборки" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" >
             <ScrollViewer VerticalScrollBarVisibility="Auto" >
                 <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
                     <Grid.ColumnDefinitions>
@@ -29,43 +32,21 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Margin="5" Text="Средняя взвешенная (Мат. ожидание), μ" FontSize="14" FontWeight="Normal" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbWeightedAVG" Grid.Column="1" Text="50,0000" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                    <dxc:ChartControl MinHeight="0" dx:ThemeManager.ThemeName="none" x:Name="chartResult" Grid.Row="5" Grid.Column="1" AnimationMode="OnDataChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible" FontSize="14" FontWeight="Normal">
+                        <dxc:XYDiagram2D MinHeight="0" FontSize="14" FontWeight="Normal">
+                            <dxc:BarSideBySideSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" BarWidth="0.9" FontSize="14" FontWeight="Normal" />
+                            <dxc:LineSeries2D ArgumentDataMember="Argument" ValueDataMember="Value" FontSize="14" FontWeight="Normal">
+                            </dxc:LineSeries2D>
+                        </dxc:XYDiagram2D>
+                    </dxc:ChartControl>
 
-                    <TextBlock Margin="5" Text="Мода, Мо" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbMode" Grid.Column="1" Grid.Row="1" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                    <TextBlock Margin="5,0,0,5" Text="Наиболее часто встречающееся значение признака у единиц данной совокупности" TextWrapping="Wrap" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2" Grid.Row="2" FontStyle="Italic" Foreground="Black"/>
-
-                    <TextBlock Margin="5" Text="Медиана, Мe" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbMedian" Grid.Column="1" Grid.Row="3" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                    <TextBlock Margin="5,0,0,5" Text="Медиана делит выборку на две части: половина вариант меньше медианы, половина — больше" TextWrapping="Wrap" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2" Grid.Row="4" FontStyle="Italic" Foreground="Black"/>
-
-                    <TextBlock Margin="5" Text="Квартили, Q1 Q2 Q3" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="5" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbQuartils" Grid.Column="1" Grid.Row="5" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                    <TextBlock Margin="5,0,0,5" Text="Это значения признака в ранжированном ряду распределения, выбранные таким образом, что 25% единиц совокупности будут меньше по величине Q1, 25% будут заключены между Q1 и Q2, 25% - между Q2 и Q3. Остальные 25% превосходят Q3" TextWrapping="Wrap" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2" Grid.Row="6" FontStyle="Italic" Foreground="Black"/>
-
-                    <TextBlock Margin="5" Text="Квартильный коэффициент дифференциации, k" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="7" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbQuartilCoeff" Grid.Column="1" Grid.Row="7" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-
-                    <TextBlock Margin="5" Text="Децили (децентили), D1 D9" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="8" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbDecils" Grid.Column="1" Grid.Row="8" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                    <TextBlock Margin="5,0,0,5" Text="Это значения признака в ранжированном ряду распределения, выбранные таким образом, что 10% единиц совокупности будут меньше по величине D1; 80% будут заключены между D1 и D9; остальные 10% превосходят D9" TextWrapping="Wrap" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2" Grid.Row="9" FontStyle="Italic" Foreground="Black"/>
                 </Grid>
             </ScrollViewer>
         </dxlc:GroupBox>
 
-        <dxlc:GroupBox Grid.Column="1" Grid.Row="0" CornerRadius="10" ShowShadow="Always" Header="Показатели вариации" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+        <dxlc:GroupBox Grid.Column="1" Grid.Row="0" CornerRadius="10" ShowShadow="Always" Header="Показатели распределения" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <ScrollViewer  VerticalScrollBarVisibility="Auto" >
                 <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
                     <Grid.ColumnDefinitions>
@@ -91,101 +72,78 @@
                         <RowDefinition Height="auto"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Margin="5" Text="Размах вариации, R" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbScope" Grid.Column="1" Grid.Row="0" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                    <TextBlock Margin="5,0,0,5" Text="Разность между максимальным и минимальным значениями признака первичного ряда" TextWrapping="Wrap" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2" Grid.Row="1" FontStyle="Italic" Foreground="Black"/>
+                    <TextBlock Margin="5" Text="Средняя взвешенная (Мат. ожидание), μ" FontSize="14" FontWeight="Normal" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
+                    <TextBlock Margin="5" x:Name="tbWeightedAVG" Grid.Column="1" Text="50,0000" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
 
-                    <TextBlock Margin="5" Text="Среднее линейное отклонение, d" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbAVGLinearDeviation" Grid.Column="1" Grid.Row="2" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                    <TextBlock Margin="5,0,0,5" Text="Вычисляют для того, чтобы учесть различия всех единиц исследуемой совокупности" TextWrapping="Wrap" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2" Grid.Row="3" FontStyle="Italic" Foreground="Black"/>
+                    <TextBlock Margin="5" Text="Дисперсия, D" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
+                    <TextBlock Margin="5" x:Name="tbDispersion" Grid.Column="1" Grid.Row="1" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                    <TextBlock Margin="5,0,0,5" Text="Характеризует меру разброса около ее среднего значения (мера рассеивания, т.е. отклонения от среднего)" TextWrapping="Wrap" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2" Grid.Row="2" FontStyle="Italic" Foreground="Black"/>
 
-                    <TextBlock Margin="5" Text="Дисперсия, D" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbDispersion" Grid.Column="1" Grid.Row="4" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                    <TextBlock Margin="5,0,0,5" Text="Характеризует меру разброса около ее среднего значения (мера рассеивания, т.е. отклонения от среднего)" TextWrapping="Wrap" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2" Grid.Row="5" FontStyle="Italic" Foreground="Black"/>
+                    <TextBlock Margin="5" Text="Среднее квадратичное отклонение, σ" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
+                    <TextBlock Margin="5" x:Name="tbMeanSquareDeviation" Grid.Column="1" Grid.Row="3" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
 
-                    <TextBlock Margin="5" Text="Несмещенная оценка дисперсии, S^2" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="6" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbUnbiasedDispersion" Grid.Column="1" Grid.Row="6" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                    <TextBlock Margin="5,0,0,5" Text="Состоятельная оценка дисперсии (исправленная дисперсия)" TextWrapping="Wrap" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2" Grid.Row="7" FontStyle="Italic" Foreground="Black"/>
+                    <TextBlock Margin="5" Text="Оценка среднеквадратичного отклонения, s" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
+                    <TextBlock Margin="5" x:Name="tbEstimationMeanSquareDeviation" Grid.Column="1" Grid.Row="4" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
 
-                    <TextBlock Margin="5" Text="Среднее квадратичное отклонение, σ" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="8" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbMeanSquareDeviation" Grid.Column="1" Grid.Row="8" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                    <TextBlock Margin="5" Text="Количество интервалов, k" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="5" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
+                    <TextBlock Margin="5" x:Name="tbCountInterval" Grid.Column="1" Grid.Row="5" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
 
-                    <TextBlock Margin="5" Text="Оценка среднеквадратичного отклонения, s" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="9" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbEstimationMeanSquareDeviation" Grid.Column="1" Grid.Row="9" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-
-                    <TextBlock Margin="5" Text="Коэффициент вариации, V" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="10" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbCoefVariation" Grid.Column="1" Grid.Row="10" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                    <TextBlock Margin="5,0,0,5" Text="Мера относительного разброса значений совокупности: показывает, какую долю среднего значения этой величины составляет ее средний разброс" TextWrapping="Wrap" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2" Grid.Row="11" FontStyle="Italic" Foreground="Black"/>
-
-                    <TextBlock Margin="5" Text="Линейный коэффициент вариации, Kd" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="12" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbLinearCoefVariation" Grid.Column="1" Grid.Row="12" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                    <TextBlock Margin="5,0,0,5" Text="Характеризует долю усредненного значения признака абсолютных отклонений от средней величины" TextWrapping="Wrap" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2" Grid.Row="13" FontStyle="Italic" Foreground="Black"/>
-
-                    <TextBlock Margin="5" Text="Коэффициент осцилляции, Kd" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="14" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbCoefOscillation" Grid.Column="1" Grid.Row="14" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                    <TextBlock Margin="5,0,0,5" Text="Отражает относительную колеблемость крайних значений признака вокруг средней" TextWrapping="Wrap" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2" Grid.Row="15" FontStyle="Italic" Foreground="Black"/>
+                    <TextBlock Margin="5" Text="Объем выборки, n" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="6" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
+                    <TextBlock Margin="5" x:Name="tbCountExpData" Grid.Column="1" Grid.Row="6" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
 
                 </Grid>
             </ScrollViewer>
 
         </dxlc:GroupBox>
 
-        <dxlc:GroupBox Grid.Column="0" Grid.Row="1" CornerRadius="10" ShowShadow="Always" Header="Показатели формы распределения" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+        <dxlc:GroupBox Grid.Column="1" Grid.Row="1" CornerRadius="10" ShowShadow="Always" Header="Интервальный ряд" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <ScrollViewer VerticalScrollBarVisibility="Auto" >
 
                 <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"></RowDefinition>
                         <RowDefinition Height="auto"></RowDefinition>
                         <RowDefinition Height="auto"></RowDefinition>
                         <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="auto"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Margin="5" Text="Относит. показатель квартильной вариации, Kq" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbQuartilleVariation" Grid.Column="1" Grid.Row="0" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                    <dxg:GridControl x:Name="gcResult" Grid.ColumnSpan="2" Height="150" Width="520" Grid.Row="0" SelectionMode="Row" dx:ThemeManager.ThemeName="none" FontSize="12" FontWeight="Normal" HorizontalAlignment="Center">
+                        <dxg:GridControl.View>
+                            <dxg:TableView AllowEditing="False" ShowGroupPanel="False" AutoWidth="True"/>
+                        </dxg:GridControl.View>
+                        <dxg:GridColumn FieldName="Number" Header="№" Width="40"/>
+                        <dxg:GridColumn FieldName="Bounds" Header="Интервал" Width="200"/>
+                        <dxg:GridColumn FieldName="HitCount" Header="Частота, nj"/>
+                        <dxg:GridColumn FieldName="ProbabilityR" Header="Теоретическая вероятность, pj" Width="300"/>
+                        <dxg:GridColumn FieldName="NMultiplyPR" Header="n * pj"/>
 
-                    <TextBlock Margin="5" Text="Моментный коэффициент ассимметрии, As" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbCoeffAsymmetry" Grid.Column="1" Grid.Row="1" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                    <TextBlock Margin="5,0,0,5" Text="Наиболее точный и распространенный показателем асимметрии" TextWrapping="Wrap" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2" Grid.Row="2" FontStyle="Italic" Foreground="Black"/>
+                        <dxg:GridColumn FieldName="MidIntervalR" Header="Середина интервала" Visible="False"/>
+                        <dxg:GridColumn FieldName="CumulativeFrequanceR" Header="Накопленная частота" Visible="False"/>
+                        <dxg:GridColumn FieldName="RelativeFrequanceR" Header="Относительная частота" Visible="False"/>
+                        <dxg:GridColumn FieldName="XMinusXMultiplyFR" Header="|x - xср| * fi" Visible="False"/>
+                        <dxg:GridColumn FieldName="XMinusXMultiplyFSquareR" Header="(x-xср)^2·fi" Visible="False"/>
+                        <dxg:GridColumn FieldName="XMinusXMultiplyCubeR" Header="(x-xср)^3·fi" Visible="False"/>
+                        <dxg:GridColumn FieldName="XMinusXMultiplyFourR" Header="(x-xср)^4·fi" Visible="False"/>
+                        <dxg:GridColumn FieldName="XMultiplyFR" Header="xi * fi" Visible="False"/>
+                    </dxg:GridControl>
 
-                    <TextBlock Margin="5" Text="Ср. кв. ошибка коэффициента асимметрии, sAs" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbMeanSquareeCoeffAsymmetry" Grid.Column="1" Grid.Row="3" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                    <TextBlock Margin="5,0,0,5" Text="Оценка существенности показателя асимметрии" TextWrapping="Wrap" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2" Grid.Row="4" FontStyle="Italic" Foreground="Black"/>
+                    <TextBlock Grid.ColumnSpan="2"  Padding="5" Text="Результаты, вычисленные по формулам" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                    <TextBlock x:Name="tbResultXras" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"  Padding="5" Text="Вычисленное значение равно " FontSize="16" FontWeight="Bold" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                    <Image Grid.Column="0" Grid.Row="2" Source="res1.PNG" Stretch="Fill" Width="70" UseLayoutRounding="True" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Right"/>
 
-                    <TextBlock Margin="5" Text="Коэффициент асимметрии Пирсона, Asp" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="5" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbCoeffAsymmetryPirson" Grid.Column="1" Grid.Row="5" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                    <TextBlock Margin="5,0,0,5" Text="Характеризует асимметрию только в центральной части распределения" TextWrapping="Wrap" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2" Grid.Row="6" FontStyle="Italic" Foreground="Black"/>
-
-                    <TextBlock Margin="5" Text="Эксцесс, Ex" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="7" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbExcess" Grid.Column="1" Grid.Row="7" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                    <TextBlock Margin="5,0,0,5" Text="Представляет собой выпад вершины эмпирического распределения вверх или вниз от вершины кривой нормального распределения" TextWrapping="Wrap" FontSize="12" FontWeight="Normal" Grid.ColumnSpan="2" Grid.Row="8" FontStyle="Italic" Foreground="Black"/>
-
-                    <TextBlock Margin="5" Text="Cр. кв. ошибка коэффициента эксцесса, sEx" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="9" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Margin="5" x:Name="tbMeanSquareCoeffExcess" Grid.Column="1" Grid.Row="9" Text="50,0000" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-
+                    <TextBlock x:Name="tbResultR" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"  Padding="5" Text="Вычисленное значение равно " FontSize="16" FontWeight="Bold" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                    <Image Grid.Column="0" Grid.Row="3" Source="res2.PNG" Stretch="Fill" Width="50" UseLayoutRounding="True" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Right"/>
                 </Grid>
             </ScrollViewer>
 
         </dxlc:GroupBox>
 
-        
-            <dxlc:GroupBox Grid.Column="1" Grid.Row="1" CornerRadius="10" ShowShadow="Always" Header="Признаки нормального распределения" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+
+        <dxlc:GroupBox Visibility="Collapsed" Grid.Column="1" Grid.Row="1" CornerRadius="10" ShowShadow="Always" Header="Признаки нормального распределения" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Auto" >
                 <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
                     <Grid.ColumnDefinitions>
@@ -211,7 +169,33 @@
         </dxlc:GroupBox>
 
 
-            <dxlc:GroupBox Grid.ColumnSpan="2" Grid.Row="2" CornerRadius="10" ShowShadow="Always" Header="Выводы" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+        <dxlc:GroupBox UseLayoutRounding="True" Grid.Column="0" Grid.Row="1" CornerRadius="10" ShowShadow="Always" Header="Критерий согласия Романовского" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+            <ScrollViewer Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Auto" >
+                <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock  Padding="5" Text="В качестве критерия, для проверки согласия опытного распределения с теоретическим, будем использовать критерий согласия Романовского, вычисляемый по формуле:" FontSize="14" FontWeight="Normal" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                    <Image Grid.Column="0" Grid.Row="1" Source="part1.PNG" Stretch="Fill" Width="150" UseLayoutRounding="True" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <TextBlock  Padding="5" Text="где: r–число степеней свободы, равное r=k-s-1 (k–число интервалов, s­–число параметров распределения), Xras вычисляется по формуле:" FontSize="12" FontWeight="Normal" FontStyle="Italic" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                    <Image Grid.Column="0" Grid.Row="3" Source="part2.PNG" Stretch="Fill" Width="170" UseLayoutRounding="True" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <TextBlock  Padding="5" Text="где n–объем выборки; k–количество интервалов гистограммы; nj–число членов вариационного ряда, попавших в j-ый интервал; pj–теоретическая вероятность того, что наработка на отказ примет значение в пределах j-го интервала." FontSize="12" FontWeight="Normal" FontStyle="Italic" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                </Grid>
+            </ScrollViewer>
+        </dxlc:GroupBox>
+
+
+        <dxlc:GroupBox Grid.ColumnSpan="2" Grid.Row="2" CornerRadius="10" ShowShadow="Always" Header="Закон распределения опытных данных" FontSize="20" FontWeight="Bold" DisplayMode="Normal" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <ScrollViewer Grid.ColumnSpan="2" Grid.Row="2" VerticalScrollBarVisibility="Auto" >
                 <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
                     <Grid.ColumnDefinitions>
@@ -225,27 +209,6 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-
-
-                    <TextBlock Margin="5" FontSize="14" x:Name="tbResultQuartils" Grid.Column="0" Grid.Row="0" FontWeight="Normal" TextWrapping="Wrap">
-                         Таким образом, 25% единиц совокупности будут меньше величины Q1, 25% будут заключены между Q1 и Q2, 25% - между Q2 и Q3. Остальные 25% превосходят Q3.
-                    </TextBlock>
-
-                    <TextBlock Margin="5" FontSize="14" x:Name="tbResultDecils" Grid.Column="0" Grid.Row="1" FontWeight="Normal" TextWrapping="Wrap">
-                         Исходя из Децилей 10% единиц совокупности будут меньше по величине D1; 80% будут заключены между D1 и D9; остальные 10% превосходят D9.
-                    </TextBlock>
-
-                    <TextBlock Margin="5" FontSize="14" x:Name="tbRateVariations" Grid.Column="0" Grid.Row="2" FontWeight="Normal" TextWrapping="Wrap">
-                         Поскольку коэффициент асимметрии ≤ 30%, то совокупность однородна, а вариация слабая. Полученным результатам можно доверять.
-                    </TextBlock>
-
-                    <TextBlock Margin="5" FontSize="14" x:Name="tbRateAsymmetry" Grid.Column="0" Grid.Row="3" FontWeight="Normal" TextWrapping="Wrap">
-                         Отрицательный знак коэффициента асиммметрии свидетельствует о наличии левосторонней асимметрии.
-                    </TextBlock>
-
-                    <TextBlock Margin="5" FontSize="14" x:Name="tbAsymmetryValue" Grid.Column="0" Grid.Row="4" FontWeight="Normal" TextWrapping="Wrap">
-                         В анализируемом ряду распределения наблюдается несущественная асимметрия.
-                    </TextBlock>
 
                     <TextBlock  Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Margin="10" FontSize="18" x:Name="tbLaw" Grid.Column="0" Grid.Row="5" FontWeight="Bold" TextWrapping="Wrap">
                          В анализируемом ряду распределения наблюдается несущественная асимметрия.

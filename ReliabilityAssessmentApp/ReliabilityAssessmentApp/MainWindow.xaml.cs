@@ -56,7 +56,7 @@ namespace ReliabilityAssessmentApp
                 {
                     if (!double.TryParse(value, out var correctValue))
                     {
-                        MessageBox.Show("Не все введденные значения являются числами"
+                        MessageBox.Show("Не все введенные значения являются числами"
                             , "Некоррeктность ввода"
                             , MessageBoxButton.OK
                             , MessageBoxImage.Warning);

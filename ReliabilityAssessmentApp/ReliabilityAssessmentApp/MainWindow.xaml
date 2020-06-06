@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:ReliabilityAssessmentApp"
         xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" xmlns:UI="clr-namespace:DevExpress.Xpf.ThemeEditor.UI;assembly=DevExpress.Xpf.ThemeEditor.v17.1" x:Class="ReliabilityAssessmentApp.MainWindow"
         mc:Ignorable="d"
-        Title="Статическая обработка данных о надежности" Height="800" Width="1200">
+        Title="Статистическая обработка данных о надежности" Height="800" Width="1200">
     <ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
     <Grid>
         <Grid.RowDefinitions>

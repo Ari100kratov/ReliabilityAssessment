@@ -171,5 +171,17 @@
       <Name>ReliabilityAssessmentLibrary</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="part1.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="part2.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res1.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res2.PNG" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

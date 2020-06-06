@@ -68,6 +68,16 @@ namespace ReliabilityAssessmentLibrary.Model
         /// </summary>
         public double RelativeFrequance { get; set; }
 
+        /// <summary>
+        /// Теоритическая вероятность
+        /// </summary>
+        public double Probability { get; set; }
+
+        public double NMultiplyP { get; set; }
+
+        public double NMultiplyPR => Math.Round(this.NMultiplyP, Settings.Default.Round);
+
+        public double ProbabilityR => Math.Round(this.Probability, Settings.Default.Round);
 
         public string Bounds => $"{Math.Round(this.LowerBound, Settings.Default.Round)} - {Math.Round(this.UpperBound, Settings.Default.Round)}";
 
